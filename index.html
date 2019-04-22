@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Ai指标系统</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="./res/layuiadmin/layui/css/layui.css" media="all">
+    <style type="text/css">
+    body{
+      overflow: hidden;
+    }
+    img.background {
+      position:absolute;
+      width:100%;
+      height:100%;
+    }
+    div.login {
+      position: absolute;
+      width: 500px;
+      height: 400px;
+      margin-left: 37%;
+      margin-top: 10%;
+    }
+    div.user {
+      text-align: center;
+    }
+
+
+    </style>
+</head>
+
+<body>
+<img class="background" src="./res/images/login.jpg">
+<div class="login">
+    <form class="layui-form" action="/login" method="post">
+        <div class="user" style="padding: 20%;">
+            <div class="layui-form-item" style="margin-bottom: 30px;">
+                <div style="font-size: 20px;">
+                    <h1>Ai-Indicator</h1>
+                </div>
+                <p style="color: #C0C0C0;">建筑行业智能指标系统</p>
+            </div>
+            <div class="layui-form-item" style="margin-bottom: 20px;">
+                <input name="username" type="text" class="layui-input" placeholder="用户名">
+            </div>
+            <div class="layui-form-item" style="margin-bottom: 20px;">
+                <input name="password" type="password" class="layui-input" placeholder="密码">
+            </div>
+            <div class="layui-form-item">
+                <!-- <button class="layui-btn layui-btn-fluid" lay-filter="login">安全登录</button> -->
+                <a class="layui-btn layui-btn-fluid" href='./home.html'>安全登录</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="./res/layuiadmin/layui/layui.js"></script>
+<script>
+layui.use(['element','form','jquery'], function(){
+    var element = layui.element;
+    var form = layui.form;
+    var $ = layui.jquery;
+});
+</script>
+</body>
+</html>
