@@ -1,0 +1,2 @@
+# aiindex
+AI指标
