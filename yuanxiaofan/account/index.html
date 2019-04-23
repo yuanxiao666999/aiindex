@@ -44,11 +44,11 @@
 
         table.render({
             elem: '#tableDemo'
-            , url: '/account/index/details'
+            , url: '../json/account_index.json'
             , page: true
             , id: 'tableReload'
             , cols: [[
-                {field: 'userName', title: '账户', sort: true}
+                {field: 'username', title: '账户', sort: true}
                 , {field: 'password', title: '密码', sort: true}
                 , {title: '操作', toolbar: '#tableDemoBar'}
             ]]

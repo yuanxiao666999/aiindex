@@ -27,14 +27,6 @@
                                        placeholder="请输入项目名称" class="layui-input">
                             </div>
 
-                            <label class="layui-form-label">标段号：</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="projectBids" lay-verify="required" autocomplete="off"
-                                       placeholder="请输入标段号" class="layui-input">
-                            </div>
-                        </div>
-
-                        <div class="layui-form-item">
                             <label class="layui-form-label">建筑时间：</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="projectTime" id="projectTime" lay-verify="required"
@@ -42,6 +34,8 @@
                                        placeholder="yyyy/MM/dd" class="layui-input">
                             </div>
                         </div>
+
+
 
                         <div class="layui-form-item">
                             <label class="layui-form-label">建筑类型：</label>
@@ -160,7 +154,7 @@
 
         upload.render({
             elem: '#upload-type1'
-            , url: '/project/upload'
+            , url: '/project/insert'
             , accept: 'file'
             , acceptMime: 'application/vnd.ms-excel'
             , exts: 'xls'
@@ -174,7 +168,7 @@
         });
 
         form.on('submit(project-input)', function (data) {
-            var data = data.field;
+            data = data.field;
             var filename = $('#upload-list').find('td').eq(0).text();
 
             if (filename) {
