@@ -4,42 +4,60 @@ __author__ = "HuangZhiTao"
 
 
 import json
-from flask import render_template, request
+from flask import render_template, request, session, redirect
 from . import accout
 from utils.sql_connect import db
 from settings import USER_INFO_TABLE
 
 
-# @accout.route("/home")
-# def home():
-#     return render_template("/home/home.html")
-#
-#
-# @accout.route("/accout/console")
-# def home_console():
-#     return render_template("/accout/console.html")
-#
-#
-# @accout.route("/accout/edit")
-# def project_input():
-#     return render_template("/accout/edit.html")
+@accout.route("/home")
+def home():
+    # return render_template("/home/home.html")
+    return "this home!!!"
 
 
-@accout.route("/account/")
-def user_info():
+@accout.route("/login", methods=["GET", "POST"])
+def login():
+    """用户登陆验证"""
+    if request.method == "GET":
+        return render_template("login.html")
+    if request.method == "POST":
+        user = request.form.get("user")
+        passwd = request.form.get("passwd")
+        sql_cmd = f"select permission from {USER_INFO_TABLE} where user=%s and passwd=%s"
+        db.cur.execute(sql_cmd, (user, passwd))
+        permission = db.cur.fetchone()
+        if permission:
+            session["user"] = user
+            session["permission"] = permission[0]
+            return redirect("/home")
+        return json.dumps({"code": 1, "msg": "账户名或密码错误！！！"})
+    return "request error"
 
+
+@accout.route("/account/index/details")
+def details():
+    """获取所有用户信息"""
     # response数据格式
     data = {
         "code": "",
         "data": [],
     }
 
-    current_page = int(request.args.get("page"))
-    limit = int(request.args.get("limit"))
+    current_page = request.args.get("page")
+    limit = request.args.get("limit")
+
+    # 判断current_page、limit参数格式是否正确
+    if not (current_page and limit) or not (current_page.isdigit() and limit.isdigit()):
+        data["code"] = 1
+        data["msg"] = "请求数据错误"
+        return json.dumps(data)
 
     # 获取当前页的数据
-    sql_cmd = f"select id, user, passwd from {USER_INFO_TABLE} limit %s,%s "
+    sql_cmd = f"select user, passwd from {USER_INFO_TABLE} limit %s,%s "
     try:
+        current_page = int(current_page)
+        limit = int(limit)
         db.cur.execute(sql_cmd, ((current_page-1)*limit, limit))
     except:
         data["code"] = 1
@@ -60,10 +78,9 @@ def user_info():
     #     count = db.cur.fetchone()[0]
     # else:
     #     count = count
-
-    for id_, user, passwd in res:
+    # 构造返回数据
+    for user, passwd in res:
         data["data"].append({
-            "userid": id_,
             "user": user,
             "passwd": passwd
         })
@@ -71,7 +88,7 @@ def user_info():
         data["code"] = 0
     return json.dumps(data)
 
-#
+
 # @accout.route("/editAccount", methods=["GET", "POST"])
 # def edit_account():
 #     if request.method == "GET":
