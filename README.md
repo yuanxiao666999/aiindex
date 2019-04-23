@@ -1,2 +1,2 @@
-#shenminjun@20190422
-1. 新建项目
+# aiindex
+AI指标
