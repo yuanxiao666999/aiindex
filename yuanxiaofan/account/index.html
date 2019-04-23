@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Ai指标</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../res/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../res/layuiadmin/style/admin.css" media="all">
+</head>
+<body>
+<div class="layui-fluid">
+    <form class="layui-form" action="">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        账户信息
+                    </div>
+                    <div class="layui-card-body">
+                        <table id="tableDemo" lay-filter="tableDemo"></table>
+                        <script type="text/html" id="tableDemoBar">
+                            <a class="layui-btn layui-btn-xs" href="edit.html" lay-event="edit">编辑</a>
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="../res/layuiadmin/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../res/layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index', 'element', 'jquery', 'layer', 'table'], function () {
+        var element = layui.element
+            , $ = layui.jquery
+            , layer = layui.layer
+            , table = layui.table;
+
+        table.render({
+            elem: '#tableDemo'
+            , url: '/account/index/details'
+            , page: true
+            , id: 'tableReload'
+            , cols: [[
+                {field: 'userName', title: '账户', sort: true}
+                , {field: 'password', title: '密码', sort: true}
+                , {title: '操作', toolbar: '#tableDemoBar'}
+            ]]
+        });
+
+
+    });
+
+</script>
+</body>
+</html>
