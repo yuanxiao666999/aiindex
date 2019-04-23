@@ -31,7 +31,12 @@ def login():
             session["user"] = user
             session["permission"] = permission[0]
             return redirect("/home")
-        return json.dumps({"code": 1, "msg": "账户名或密码错误！！！"})
+        data = {
+            "code": 1,
+            "data": [],
+            "msg": "账户名或密码错误！！！"
+        }
+        return json.dumps(data)
     return "request error"
 
 
@@ -40,10 +45,9 @@ def details():
     """获取所有用户信息"""
     # response数据格式
     data = {
-        "code": "",
+        "code": 0,
         "data": [],
     }
-
     current_page = request.args.get("page")
     limit = request.args.get("limit")
 
@@ -53,57 +57,59 @@ def details():
         data["msg"] = "请求数据错误"
         return json.dumps(data)
 
+    current_page = int(current_page)
+    limit = int(limit)
+    start_num = (current_page-1)*limit
+
+    # 获取数据量
+    sql_cmd = f"select count(id) from {USER_INFO_TABLE} "
+    db.cur.execute(sql_cmd)
+    count = db.cur.fetchone()[0]
+    if start_num > count:
+        start_num = (count // limit)*limit
+
     # 获取当前页的数据
     sql_cmd = f"select user, passwd from {USER_INFO_TABLE} limit %s,%s "
     try:
-        current_page = int(current_page)
-        limit = int(limit)
-        db.cur.execute(sql_cmd, ((current_page-1)*limit, limit))
+        db.cur.execute(sql_cmd, (start_num, limit))
     except:
         data["code"] = 1
         data["msg"] = "请求数据错误"
         return json.dumps(data)
     res = db.cur.fetchall()
+    data["count"] = count
 
-    # 获取数据量
-    sql_cmd = f"select count(id) from {USER_INFO_TABLE} "
-    db.cur.execute(sql_cmd)
-    data["count"] = db.cur.fetchone()[0]
-
-    # 请求第一页的时候记录总记录数值
-    # if current_page == 1:
-    #     global count
-    #     sql_cmd = "select count(id) from user_info "
-    #     db.cur.execute(sql_cmd)
-    #     count = db.cur.fetchone()[0]
-    # else:
-    #     count = count
     # 构造返回数据
     for user, passwd in res:
         data["data"].append({
             "user": user,
             "passwd": passwd
         })
-    else:
-        data["code"] = 0
+    print(data)
     return json.dumps(data)
 
 
-# @accout.route("/editAccount", methods=["GET", "POST"])
-# def edit_account():
-#     if request.method == "GET":
-#         userid = request.args.get("userid")
-#         sql_cmd = f"select username, passwd from {USER_INFO_TABLE} where id=%s"
-#         db.cur.execute(sql_cmd, userid)
-#         res = db.cur.fetchone()
-#         data = {"username": res[0], "passwd": res[1], "userid": userid}
-#         return render_template("/accout/editAccount.html", **data)
-#     elif request.method == "POST":
-#         userid = request.form.get("userid")
-#         passwd = request.form.get("passwd")
-#         sql_cmd = f"update {USER_INFO_TABLE} set passwd=%s where id=%s "
-#         try:
-#             db.cur.execute(sql_cmd, (passwd, userid))
-#             return '1'
-#         except:
-#             return '0'
+@accout.route("/account/update", methods=["GET", "POST"])
+def account_update():
+    if request.method == "GET":
+        user = request.args.get("user")
+        sql_cmd = f"select passwd from {USER_INFO_TABLE} where user=%s"
+        db.cur.execute(sql_cmd, user)
+        res = db.cur.fetchone()
+        if res:
+            data = {
+                "code": 0,
+                "data": [{"user": user, "passwd": res[0]}],
+            }
+            return json.dumps(data)
+        return json.dumps({"code": 1, "msg": "请求错误"})
+
+    elif request.method == "POST":
+        user = request.form.get("user")
+        passwd = request.form.get("passwd")
+        sql_cmd = f"update {USER_INFO_TABLE} set passwd=%s where user=%s "
+        try:
+            db.cur.execute(sql_cmd, (passwd, user))
+            return json.dumps({"code": 0, "msg": "修改成功"})
+        except:
+            json.dumps({"code": 1, "msg": "修改失败"})
