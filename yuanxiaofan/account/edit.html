@@ -25,8 +25,8 @@
                                 <div class="layui-col-md6">
                                     <label class="layui-form-label">账号：</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="account" placeholder="账号" autocomplete="off" readonly
-                                               class="layui-input">
+                                        <input type="text" name="account" id="account" placeholder="账号"
+                                               autocomplete="off" class="layui-input">
                                     </div>
                                 </div>
                             </div>
@@ -69,6 +69,9 @@
             , form = layui.form
             , element = layui.element
             , layer = layui.layer;
+
+        var params = window.location.href;
+        console.log(params);
 
         form.on('submit(account-edit)', function (data) {
             data = data.field;
