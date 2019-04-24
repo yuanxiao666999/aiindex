@@ -22,7 +22,7 @@
                     <div class="layui-card-body">
                         <table id="tableDemo" lay-filter="tableDemo"></table>
                         <script type="text/html" id="tableDemoBar">
-                            <a class="layui-btn layui-btn-xs" href="edit.html" lay-event="edit">编辑</a>
+                            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
                         </script>
                     </div>
                 </div>
@@ -59,9 +59,9 @@
             var tr = obj.tr;
 
             if(obj.event === 'edit'){
-                window.location.href='edit.html?username='+data['username'];
+                window.location.href='./edit.html?username='+data['username'];
             }
-        })
+        });
         
 
 
