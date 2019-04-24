@@ -25,7 +25,7 @@
                         </div>
                         <table id="tableDemo" lay-filter="tableDemo"></table>
                         <script type="text/html" id="tableDemoBar">
-{#                            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>#}
+                            <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
                             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
                         </script>
                     </div>
@@ -48,7 +48,7 @@
 
         table.render({
             elem: '#tableDemo'
-            , url: '/project/history/details'
+            , url: '../json/project_history.json'
             , page: true
             , id: 'tableReload'
             , cols: [[
