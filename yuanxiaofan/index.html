@@ -82,7 +82,7 @@
             data = data.field;
             data = JSON.stringify(data);
 
-            $.post('./json/login_success.json', data, function (res) {
+            $.get('./json/login_success.json', function (res) {
                 // res = JSON.parse(res);
                 if (res.code === 0) {
                     window.location.href = '/home.html';
