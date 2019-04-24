@@ -59,7 +59,8 @@
             var tr = obj.tr;
 
             if(obj.event === 'edit'){
-                window.location.href='./edit.html?username='+data['username'];
+                // window.sessionStorage.setItem("username",data['username']);
+                window.location.href='edit.html?username='+data['username'];
             }
         });
         
