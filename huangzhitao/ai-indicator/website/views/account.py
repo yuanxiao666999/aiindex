@@ -10,34 +10,31 @@ from utils.sql_connect import db
 from settings import USER_INFO_TABLE
 
 
-@accout.route("/home")
-def home():
-    # return render_template("/home/home.html")
-    return "this home!!!"
-
-
-@accout.route("/login", methods=["GET", "POST"])
+@accout.route("/login", methods=["POST",])
 def login():
     """用户登陆验证"""
-    if request.method == "GET":
-        return render_template("login.html")
-    if request.method == "POST":
-        user = request.form.get("user")
-        passwd = request.form.get("passwd")
-        sql_cmd = f"select permission from {USER_INFO_TABLE} where user=%s and passwd=%s"
-        db.cur.execute(sql_cmd, (user, passwd))
-        permission = db.cur.fetchone()
-        if permission:
-            session["user"] = user
-            session["permission"] = permission[0]
-            return redirect("/home")
+    params = request.form.to_dict()
+    user = params.get("user")
+    passwd = params.get("passwd")
+    sql_cmd = f"select permission from {USER_INFO_TABLE} where user=%s and passwd=%s"
+    db.cur.execute(sql_cmd, (user, passwd))
+    permission = db.cur.fetchone()
+    if permission:
+        session["user"] = user
+        session["permission"] = permission[0]
+        data = {
+            "code": 0,
+            "data": {
+                "user": user,
+                "permission": permission[0]
+            },
+        }
+    else:
         data = {
             "code": 1,
-            "data": [],
             "msg": "账户名或密码错误！！！"
         }
-        return json.dumps(data)
-    return "request error"
+    return json.dumps(data)
 
 
 @accout.route("/account/index/details")

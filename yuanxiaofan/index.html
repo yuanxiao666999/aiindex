@@ -65,10 +65,8 @@
 
         form.on('submit(login)', function (data) {
             data = data.field;
-            data = JSON.stringify(data);
-
             $.post('./login', data, function (res) {
-                // res = JSON.parse(res);
+                res = JSON.parse(res);
                 if (res.code === 0) {
                     window.location.href = '/home.html';
                 } else {
