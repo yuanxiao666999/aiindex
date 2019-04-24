@@ -26,7 +26,7 @@
                                     <label class="layui-form-label">账号：</label>
                                     <div class="layui-input-block">
                                         <input type="text" name="account" id="account" placeholder="账号"
-                                               autocomplete="off" class="layui-input">
+                                               autocomplete="off" readonly class="layui-input">
                                     </div>
                                 </div>
                             </div>
@@ -70,8 +70,11 @@
             , element = layui.element
             , layer = layui.layer;
 
-        var params = window.location.href;
-        console.log(params);
+        var params = window.location.href.split("=");
+        // console.log(params);
+        var canshu = params[1];
+        // console.log(canshu);
+        $('#account').attr('value', canshu);
 
         form.on('submit(account-edit)', function (data) {
             data = data.field;

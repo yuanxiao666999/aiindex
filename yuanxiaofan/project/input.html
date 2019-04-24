@@ -109,16 +109,14 @@
                                 <thead>
                                 <tr>
                                     <th>文件名</th>
-                                    <th>状态</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody id="upload-list">
-                                <tr>
+                                <!--<tr>
                                     <td></td>
                                     <td></td>
-                                    <td></td>
-                                </tr>
+                                </tr>-->
                                 </tbody>
                             </table>
                         </div>
@@ -173,40 +171,58 @@
             }
         });
 
-        form.on('select(underBuilding)', function (data) {
+        /*form.on('select(underBuilding)', function (data) {
             if (data.value == '1') {
                 $('#underBuildingScale').show();
             }
-        });
+        });*/
 
         upload.render({
             elem: '#upload-type1'
-            , url: ''
+            , url: '/project/upload'
             , accept: 'file'
             , acceptMime: 'application/vnd.ms-excel'
             , exts: 'xls'
-            , choose:function (obj) {
+            /*, choose: function (obj) {
                 var files = obj.pushFile();
-                var tr = $(['<tr id="upload-'+ index +'">'
-                    ,'<td>'+ file.name +'</td>'
-                    ,'<td>等待上传</td>'
-                    ,'<td>'
-                    ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
-                    ,'</td>'
-                    ,'</tr>'].join(''));
+                obj.preview(function (index, file) {
+                    var tr = $(['<tr id="upload-' + index + '">'
+                        , '<td>' + file.name + '</td>'
+                        , '<td>等待上传</td>'
+                        , '<td>'
+                        , '<button class="layui-btn layui-btn-xs layui-btn-danger demo-upload">上传</button>'
+                        , '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+                        , '</td>'
+                        , '</tr>'].join(''));
 
+                    //单个上传
+                    tr.find('.demo-upload').on('click', function(){
+                        obj.upload(index, file);
+                    });
 
-                //删除
-                tr.find('.demo-delete').on('click', function(){
-                    delete files[index]; //删除对应的文件
-                    tr.remove();
-                });
+                    //删除
+                    tr.find('.demo-delete').on('click', function () {
+                        delete files[index]; //删除对应的文件
+                        tr.remove();
+                    });
 
-                $('#upload-list').append(tr);
-            }
+                    $('#upload-list').append(tr);
+                })
+            }*/
             , done: function (res) {
                 $('#upload-list').find('td').eq(0).html(res['filename']);
-                $('#upload-list').find('td').eq(1).html(res['msg']);
+                $('#upload-list').find('td').eq(1).html('<button class="layui-btn layui-btn-xs layui-btn-normal demo-edit">编辑</button><button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>');
+
+                $('.demo-delete').on('click',function () {
+                    for(var i=0;i<$('#upload-list tr').length;i++){
+                        $('#upload-list').find('tr').eq(i).remove();
+                    }
+                })
+                /*if(res.code == 0){ //上传成功
+                    var tr = $('#upload-list').find('tr#upload-'+ index)
+                        ,tds = tr.children();
+                    tds.eq(2).html('<span>上传成功</span>');
+                }*/
             }
             , error: function () {
                 layer.msg('网络异常！');
