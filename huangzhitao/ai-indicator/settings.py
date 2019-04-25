@@ -5,7 +5,7 @@ __author__ = "HuangZhiTao"
 
 # 数据库链接参数
 MYSQL_CONNECT = {
-    "host": "139.196.98.163",
+    "host": "127.0.0.1",
     "database": "aiindex",
     "user": "root",
     "passwd": "root",
