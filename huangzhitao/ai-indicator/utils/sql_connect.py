@@ -15,10 +15,13 @@ class SqlConnect:
         )
         self.cur = self.conn.cursor()
 
+    # def sql_add(self, **kwargs):
+    #     sql = f"insert into {kwargs}"
+
     def __del__(self):
         self.cur.close()
         self.conn.close()
 
 
-db = SqlConnect()
+# db = SqlConnect()
 

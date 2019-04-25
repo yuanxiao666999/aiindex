@@ -4,112 +4,184 @@ __author__ = "HuangZhiTao"
 
 
 import json
-from flask import render_template, request, session, redirect
+from flask import request, session
+from sqlalchemy import func
 from . import accout
-from utils.sql_connect import db
-from settings import USER_INFO_TABLE
+from website.model import Session, Users
 
 
-@accout.route("/home")
-def home():
-    # return render_template("/home/home.html")
-    return "this home!!!"
-
-
-@accout.route("/login", methods=["GET", "POST"])
+@accout.route("/login", methods=["POST"])
 def login():
     """用户登陆验证"""
-    if request.method == "GET":
-        return render_template("login.html")
-    if request.method == "POST":
-        user = request.form.get("user")
-        passwd = request.form.get("passwd")
-        sql_cmd = f"select permission from {USER_INFO_TABLE} where user=%s and passwd=%s"
-        db.cur.execute(sql_cmd, (user, passwd))
-        permission = db.cur.fetchone()
-        if permission:
-            session["user"] = user
-            session["permission"] = permission[0]
-            return redirect("/home")
-        data = {
-            "code": 1,
-            "data": [],
-            "msg": "账户名或密码错误！！！"
-        }
-        return json.dumps(data)
-    return "request error"
+
+    data = {
+        "code": 0,
+        "data": []
+    }
+
+    # 创建数据库链接会话
+    sql_session = Session()
+    # 获取用户信息
+    user = request.form.get("user")
+    passwd = request.form.get("passwd")
+    # 数据库认证用户信息
+    permission_ = sql_session.query(Users).filter_by(user=user, passwd=passwd).first()
+    sql_session.close()
+    if permission_:
+        session["user"] = user
+        session["permission"] = permission_.permission
+        data["data"].append({"user": user, "permission": session["permission"]})
+    else:
+        data["code"] = 1
+
+    return json.dumps(data)
 
 
-@accout.route("/account/index/details")
+@accout.route("/account/index/details", methods=["GET", "POST"])
 def details():
-    """获取所有用户信息"""
+    """获取用户信息"""
     # response数据格式
     data = {
         "code": 0,
         "data": [],
     }
-    current_page = request.args.get("page")
-    limit = request.args.get("limit")
+    # 创建数据库链接会话
+    sql_session = Session()
 
-    # 判断current_page、limit参数格式是否正确
-    if not (current_page and limit) or not (current_page.isdigit() and limit.isdigit()):
+    if request.method == "GET":
+        current_page = request.args.get("page")
+        limit = request.args.get("limit")
+
+        # 判断current_page、limit参数格式是否正确
+        if not (current_page and limit) or not (current_page.isdigit() and limit.isdigit()):
+            data["code"] = 1
+            data["msg"] = "请求数据错误"
+            return json.dumps(data)
+
+        current_page = int(current_page)
+        limit = int(limit)
+        start_num = (current_page-1)*limit
+
+        # 获取数据量
+        count = sql_session.query(func.count(Users.id)).first()[0]
+        if start_num > count:
+            start_num = (count // limit)*limit
+
+        # 获取当前页的数据
+        current_page_data = sql_session.query(Users.user, Users.passwd).offset(start_num).limit(limit).all()
+        if not current_page_data:
+            data["code"] = 1
+        else:
+            data["count"] = count
+            # #构造返回数据
+            for user, passwd in current_page_data:
+                data["data"].append({
+                    "user": user,
+                    "passwd": passwd
+                })
+            sql_session.close()
+
+    elif request.method == "POST":
+
+        # 获取查询用户名关键字
+        keyword = request.form.get("keyword")
+
+        user_data = sql_session.query(Users.id, Users.user, Users.passwd, Users.permission,).filter(Users.user.like(f"%{keyword}%")).all()
+        if user_data:
+            for i in user_data:
+                data["data"].append({
+                    "id": i[0],
+                    "user": i[1],
+                    "passwd": i[2],
+                    "permission": i[3]
+                })
+        else:
+            data["code"] = 1
+
+    return json.dumps(data)
+
+
+@accout.route("/account/insert", methods=["POST"])
+def accout_insert():
+    """增加用户账号"""
+
+    data = {
+        "code": 0,
+        "data": []
+    }
+
+    user = request.form.get("user")
+    passwd = request.form.get("passwd")
+    permission = request.form.get("permission")
+
+    sql_session = Session()
+
+    # 去重用户名
+    dup_user = sql_session.query(Users.user).filter_by(user=user).all()
+    if dup_user:
         data["code"] = 1
-        data["msg"] = "请求数据错误"
-        return json.dumps(data)
+    else:
+        user_obj = Users(user=user, passwd=passwd, permission=permission)
+        sql_session.add(user_obj)
+        sql_session.commit()
+    sql_session.close()
 
-    current_page = int(current_page)
-    limit = int(limit)
-    start_num = (current_page-1)*limit
+    return json.dumps(data)
 
-    # 获取数据量
-    sql_cmd = f"select count(id) from {USER_INFO_TABLE} "
-    db.cur.execute(sql_cmd)
-    count = db.cur.fetchone()[0]
-    if start_num > count:
-        start_num = (count // limit)*limit
 
-    # 获取当前页的数据
-    sql_cmd = f"select user, passwd from {USER_INFO_TABLE} limit %s,%s "
-    try:
-        db.cur.execute(sql_cmd, (start_num, limit))
-    except:
+@accout.route("/account/delete", methods=["POST"])
+def accout_delete():
+    """删除用户账号"""
+
+    data = {"code": 0}
+
+    user = request.form.get("user")
+    passwd = request.form.get("passwd")
+
+    sql_session = Session()
+    user_obj = sql_session.query(Users).filter_by(user=user, passwd=passwd)
+
+    if user_obj.all():
+        user_obj.delete()
+        sql_session.commit()
+    else:
         data["code"] = 1
-        data["msg"] = "请求数据错误"
-        return json.dumps(data)
-    res = db.cur.fetchall()
-    data["count"] = count
+    sql_session.close()
 
-    # 构造返回数据
-    for user, passwd in res:
-        data["data"].append({
-            "user": user,
-            "passwd": passwd
-        })
-    print(data)
     return json.dumps(data)
 
 
 @accout.route("/account/update", methods=["GET", "POST"])
 def account_update():
+    """用户信息更改"""
+
+    data = {
+        "code": 0,
+        "data": [],
+    }
+
+    # 创建数据库链接会话
+    sql_session = Session()
+
     if request.method == "GET":
         user = request.args.get("user")
-        sql_cmd = f"select passwd from {USER_INFO_TABLE} where user=%s"
-        db.cur.execute(sql_cmd, user)
-        res = db.cur.fetchone()
-        if res:
-            data = {
-                "code": 0,
-                "data": [{"user": user, "passwd": res[0]}],
-            }
-            return json.dumps(data)
-        return json.dumps({"code": 1, "msg": "请求错误"})
+        user_obj = sql_session.query(Users).filter_by(user=user).first()
+        if user_obj:
+            data["data"].append({"user": user, "passwd": user_obj.passwd}),
 
     elif request.method == "POST":
         user = request.form.get("user")
         passwd = request.form.get("passwd")
-        sql_cmd = f"update {USER_INFO_TABLE} set passwd=%s where user=%s "
-        try:
-            db.cur.execute(sql_cmd, (passwd, user))
-            return json.dumps({"code": 0, "msg": "修改成功"})
-        except:
-            json.dumps({"code": 1, "msg": "修改失败"})
+        user_obj = sql_session.query(Users).filter_by(user=user).first()
+        if user_obj:
+            sql_session.query(Users).filter_by(user=user).update({Users.passwd: passwd})
+            sql_session.commit()
+        else:
+            data["code"] = 1
+    else:
+        data["code"] = 1
+
+    # 关闭数据库链接会话
+    sql_session.close()
+
+    return json.dumps(data)
