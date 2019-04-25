@@ -37,7 +37,7 @@ def login():
     return json.dumps(data)
 
 
-@accout.route("/account/index/details", methods=["GET", "POST"])
+@accout.route("/account/details", methods=["GET", "POST"])
 def details():
     """获取用户信息"""
     # response数据格式
@@ -172,6 +172,7 @@ def account_update():
     elif request.method == "POST":
         user = request.form.get("user")
         passwd = request.form.get("passwd")
+        print(user, passwd)
         user_obj = sql_session.query(Users).filter_by(user=user).first()
         if user_obj:
             sql_session.query(Users).filter_by(user=user).update({Users.passwd: passwd})

@@ -25,7 +25,7 @@
                                 <div class="layui-col-md6">
                                     <label class="layui-form-label">账号：</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="account" id="account" placeholder="账号"
+                                        <input type="text" name="user" id="user" placeholder="账号"
                                                autocomplete="off" readonly class="layui-input">
                                     </div>
                                 </div>
@@ -34,7 +34,7 @@
                                 <div class="layui-col-md6">
                                     <label class="layui-form-label">密码：</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="account" placeholder="密码" autocomplete="off"
+                                        <input type="text" name="passwd" placeholder="密码" autocomplete="off"
                                                class="layui-input">
                                     </div>
                                 </div>
@@ -71,16 +71,16 @@
 
         var params = window.location.href.split("=");
         var canshu = params[1];
-        $('#account').attr('value', canshu);
+        $('#user').attr('value', canshu);
 
         form.on('submit(account-edit)', function (data) {
             data = data.field;
 
             $.post('/account/update', data, function (res) {
-                data  =  JSON.parse(res);
+                res  =  JSON.parse(res);
                 if (res.code === 0) {
                     alert(res.msg);
-                    window.location.href='./account/index.html'
+                    window.location.href='/account/'
                 }else{
                     layer.msg(res.msg);
                 }
