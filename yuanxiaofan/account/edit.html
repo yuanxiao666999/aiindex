@@ -55,7 +55,6 @@
     </form>
 </div>
 <script src="../res/layuiadmin/layui/layui.js"></script>
-<script src="../res/layuiadmin/layui/layui.js"></script>
 <script>
     layui.config({
         base: '../res/layuiadmin/' //静态资源所在路径
@@ -71,19 +70,17 @@
             , layer = layui.layer;
 
         var params = window.location.href.split("=");
-        // console.log(params);
         var canshu = params[1];
-        // console.log(canshu);
         $('#account').attr('value', canshu);
 
         form.on('submit(account-edit)', function (data) {
             data = data.field;
-            data = JSON.stringify(data);
 
             $.post('/account/update', data, function (res) {
                 data  =  JSON.parse(res);
-                if (res.code===0) {
-                    window.location.href='/account/index'
+                if (res.code === 0) {
+                    alert(res.msg);
+                    window.location.href='./account/index.html'
                 }else{
                     layer.msg(res.msg);
                 }
