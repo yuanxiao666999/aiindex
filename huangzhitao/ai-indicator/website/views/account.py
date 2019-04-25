@@ -37,7 +37,7 @@ def login():
     return json.dumps(data)
 
 
-@accout.route("/account/index/details", methods=["GET", "POST"])
+@accout.route("/account/details", methods=["GET", "POST"])
 def details():
     """获取用户信息"""
     # response数据格式
@@ -63,23 +63,26 @@ def details():
         start_num = (current_page-1)*limit
 
         # 获取数据量
-        count = sql_session.query(func.count(Users.id)).first()[0]
+        count = sql_session.query(func.count(Users.id)).first()
+        if not count:
+            data["code"] = 0
+            data["msg"] = "用户信息为空"
+            return json.dumps(data)
+
+        count = count[0]
         if start_num > count:
             start_num = (count // limit)*limit
 
         # 获取当前页的数据
-        current_page_data = sql_session.query(Users.user, Users.passwd).offset(start_num).limit(limit).all()
-        if not current_page_data:
-            data["code"] = 1
-        else:
-            data["count"] = count
-            # #构造返回数据
-            for user, passwd in current_page_data:
-                data["data"].append({
-                    "user": user,
-                    "passwd": passwd
-                })
-            sql_session.close()
+        current_page_data = sql_session.query(Users.user, Users.passwd, ).filter(Users.permission != 0).offset(start_num).limit(limit).all()
+        data["count"] = count - 1
+        # #构造返回数据
+        for user, passwd in current_page_data:
+            data["data"].append({
+                "user": user,
+                "passwd": passwd
+            })
+        sql_session.close()
 
     elif request.method == "POST":
 
@@ -97,6 +100,7 @@ def details():
                 })
         else:
             data["code"] = 1
+            data["msg"] = "用户不存在"
 
     return json.dumps(data)
 
@@ -178,8 +182,11 @@ def account_update():
             sql_session.commit()
         else:
             data["code"] = 1
+            data["msg"] = "用户不存在"
+
     else:
         data["code"] = 1
+        data["msg"] = "请求错误"
 
     # 关闭数据库链接会话
     sql_session.close()
