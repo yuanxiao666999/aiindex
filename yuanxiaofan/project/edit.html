@@ -23,19 +23,21 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">项目名称：</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="projectName" lay-verify="required" autocomplete="off"
+                                <input type="text" name="projectName" id="projectName" lay-verify="required"
+                                       autocomplete="off"
                                        placeholder="请输入项目名称" class="layui-input">
                             </div>
                             <label class="layui-form-label">建筑时间：</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="projectTime" id="projectTime" lay-verify="required"
+                                <input type="text" name="buildTime" id="buildTime" lay-verify="required"
                                        autocomplete="off" placeholder="yyyy/MM/dd" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">建筑类型：</label>
                             <div class="layui-input-inline">
-                                <select name="buildingType" lay-filter="buildingType" lay-verify="required">
+                                <select name="buildingType" id="buildingType"lay-filter="buildingType"
+                                        lay-verify="required">
                                     <option value="">请选择</option>
                                     <option value="商品住宅">商品住宅</option>
                                 </select>
@@ -66,7 +68,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">提供者：</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="provider" id="provider" placeholder="提供者" autocomplete="off"
+                                <input type="text" name="provider" id="provider" placeholder="提供者"
+                                       autocomplete="off"
                                        readonly class="layui-input">
                             </div>
                             <label class="layui-form-label">提供时间：</label>
@@ -94,18 +97,7 @@
                                 <i class="layui-icon"></i>上传文件
                             </button>
                             <table class="layui-table" id="upload-table">
-                                <!--<thead>
-                                <tr>
-                                    <th>文件名</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody id="upload-list">-->
-                                <!--<tr>
-                                    <td></td>
-                                    <td></td>
-                                </tr>-->
-                                <!--</tbody>-->
+
                             </table>
                             <script type="text/html" id="upload-toolbar">
                                 <button class="layui-btn" lay-event="edit">编辑</button>
@@ -137,14 +129,14 @@
 </script>
 <script>
 
-    layui.use(['form', 'element', 'jquery', 'layer', 'upload', 'laydate','table'], function () {
+    layui.use(['form', 'element', 'jquery', 'layer', 'upload', 'laydate', 'table'], function () {
         var form = layui.form
             , element = layui.element
             , $ = layui.jquery
             , layer = layui.layer
             , upload = layui.upload
             , laydate = layui.laydate
-            , table =  layui.table;
+            , table = layui.table;
 
         laydate.render({
             elem: '#projectTime',
@@ -157,16 +149,30 @@
 
         var mydate = new Date;
         var year = mydate.getFullYear();
-        var mon = mydate.getMonth()+1;
+        var mon = mydate.getMonth() + 1;
         var day = mydate.getDate();
-        var date = year+"/"+(mon<10?"0"+mon:mon)+"/"+day;
-        $('#provideTime').attr("value",date);
+        var date = year + "/" + (mon < 10 ? "0" + mon : mon) + "/" + day;
+        $('#provideTime').attr("value", date);
 
         var user = window.sessionStorage.getItem("user");
-        $('#provider').attr("value",user);
+        $('#provider').attr("value", user);
 
+        /*var num = -1;
+        num++;
+        var pro = window.sessionStorage.getItem("projectName" + num);
+        console.log(pro);
+        $('#' + 'projectName' + num).attr("value", pro);*/
 
-
+       var projectName = window.sessionStorage.getItem("projectName");
+        var buildTime = window.sessionStorage.getItem("buildTime");
+        var buildingType = window.sessionStorage.getItem("buildingType");
+        var provider =  window.sessionStorage.getItem("provider");
+        var provideTime =  window.sessionStorage.getItem("provideTime");
+        $('#projectName').attr("value", projectName);
+        $('#buildTime').attr("value", buildTime);
+        $('#buildingType').attr("value", buildingType);
+        $('#provider').attr("value", provider);
+        $('#provideTime').attr("value", provideTime);
 
         form.on('select(buildingType)', function (data) {
             if (data.value == '商品住宅') {
@@ -182,12 +188,12 @@
         });*/
 
         table.render({
-            elem:'#upload-table'
-            ,url:'/'
-            ,id:'table-render'
-            ,cols:[[
-                {field:'filename',title:'文件名'}
-                ,{fixed:'right',title:'操作',toolbar:'#upload-toolbar'}
+            elem: '#upload-table'
+            , url: '/'
+            , id: 'table-render'
+            , cols: [[
+                {field: 'filename', title: '文件名'}
+                , {fixed: 'right', title: '操作', toolbar: '#upload-toolbar'}
             ]]
         });
 
@@ -200,8 +206,8 @@
             , exts: 'xls'
             , done: function (res) {
 
-                table.reload('table-render',{
-                    url:''
+                table.reload('table-render', {
+                    url: ''
                 })
 
             }
@@ -210,14 +216,14 @@
             }
         });
 
-        table.on('tool(upload-toolbar)',function (obj) {
+        table.on('tool(upload-toolbar)', function (obj) {
             var data = obj.data;
-            if(obj.event==='edit'){
-                $.post('',data,function (res) {
+            if (obj.event === 'edit') {
+                $.post('', data, function (res) {
                     res = JSON.parse(res);
-                    if(res.code===0){
-                        window.location.href = 'upload_edit.html?filename'+res.data;
-                    }else{
+                    if (res.code === 0) {
+                        window.location.href = 'upload_edit.html?filename' + res.data;
+                    } else {
                         layer.msg(res.msg);
                     }
                 })

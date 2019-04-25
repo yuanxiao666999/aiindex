@@ -85,10 +85,8 @@
                     layer.close(index);
                 });
             }else if(layEvent === 'edit'){
-              /*  for(var i=0;i<$('#project-table td').length;i++){
-                    window.sessionStorage.setItem("projectName"+i,data['projectName'+i]);
-                }*/
-                window.sessionStorage.setItem("projectName",data['projectName']);
+
+                window.sessionStorage.setItem('projectName',data['projectName']);
                 window.location.href='edit.html';
             }
         });

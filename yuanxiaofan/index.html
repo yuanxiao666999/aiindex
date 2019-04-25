@@ -51,7 +51,7 @@
             </div>
             <div class="layui-form-item">
                 <!-- <button class="layui-btn layui-btn-fluid" lay-filter="login">安全登录</button> -->
-                <button class="layui-btn layui-btn-fluid layui-bg-cyan" lay-submit="" lay-filter="login">安全登录</button>
+                <button class="layui-btn layui-btn-fluid layui-bg-cyan" lay-submit="" lay-filter="login" id="login-btn">安全登录</button>
             </div>
         </div>
     </form>
@@ -78,14 +78,17 @@
         // });
 
 
+
+
         form.on('submit(login)', function (data) {
             data = data.field;
-            data = JSON.stringify(data);
 
             $.get('./json/login_success.json', function (res) {
                 // res = JSON.parse(res);
                 if (res.code === 0) {
-                    window.location.href = '/home.html';
+                    window.sessionStorage.setItem('user',data['user']);
+                    window.location.href = 'home.html';
+
                 } else {
                     layer.msg(res.msg);
                 }

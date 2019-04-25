@@ -158,8 +158,8 @@
         });
 
         form.on('submit(pmm-search)', function (data) {
-            var data = data.field;
-            $.post(url = '/pmm-search/submit', data = data, function (res) {
+            data = data.field;
+            $.post('/pmm-search/submit', data, function (res) {
                 data = JSON.parse(res);
                 var tbody = '';
                 var total2 = 0;
