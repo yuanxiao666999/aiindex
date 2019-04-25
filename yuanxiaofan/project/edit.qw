@@ -23,7 +23,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">项目名称：</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="projectName" lay-verify="required" autocomplete="off"
+                                <input type="text" name="projectName" id="projectName" lay-verify="required" autocomplete="off"
                                        placeholder="请输入项目名称" class="layui-input">
                             </div>
                             <label class="layui-form-label">建筑时间：</label>
@@ -94,18 +94,7 @@
                                 <i class="layui-icon"></i>上传文件
                             </button>
                             <table class="layui-table" id="upload-table">
-                                <!--<thead>
-                                <tr>
-                                    <th>文件名</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody id="upload-list">-->
-                                <!--<tr>
-                                    <td></td>
-                                    <td></td>
-                                </tr>-->
-                                <!--</tbody>-->
+
                             </table>
                             <script type="text/html" id="upload-toolbar">
                                 <button class="layui-btn" lay-event="edit">编辑</button>
@@ -165,6 +154,8 @@
         var user = window.sessionStorage.getItem("user");
         $('#provider').attr("value",user);
 
+        var pro = window.sessionStorage.getItem("projectName");
+        $('#projectName').attr("value",pro);
 
 
 

@@ -4,35 +4,34 @@
   "data": [
     {
       "projectName": "上海",
-      "projectBids": "123456",
-      "projectTime": "123456",
-      "buildingType": "123456",
-      "buildingType2": "asdf",
-      "buildingScale": "123456"
-    },
-    {
-      "projectName": "南京",
-      "projectBids": "123456",
-      "projectTime": "123456",
-      "buildingType": "123456",
-      "buildingType2": "asdf",
-      "buildingScale": "123456"
-    },
-    {
+      "buildTime": "2016/02/15",
+      "buildingType": "",
+      "provider": "木子李",
+      "provideTime": "2016/02/15"
+    },{
+      "projectName": "北京",
+      "buildTime": "2016/02/15",
+      "buildingType": "",
+      "provider": "木子李",
+      "provideTime": "2016/02/15"
+    },{
+      "projectName": "郑州",
+      "buildTime": "2016/02/15",
+      "buildingType": "",
+      "provider": "木子李",
+      "provideTime": "2016/02/15"
+    },{
       "projectName": "洛阳",
-      "projectBids": "123456",
-      "projectTime": "123456",
-      "buildingType": "123456",
-      "buildingType2": "asdf",
-      "buildingScale": "123456"
-    },
-    {
-      "projectName": "重庆",
-      "projectBids": "123456",
-      "projectTime": "123456",
-      "buildingType": "123456",
-      "buildingType2": "asdf",
-      "buildingScale": "123456"
+      "buildTime": "2016/02/15",
+      "buildingType": "",
+      "provider": "木子李",
+      "provideTime": "2016/02/15"
+    },{
+      "projectName": "周口",
+      "buildTime": "2016/02/15",
+      "buildingType": "",
+      "provider": "木子李",
+      "provideTime": "2016/02/15"
     }
   ]
 }
