@@ -31,14 +31,17 @@ def project_upload():
     if not project_name:
         return json.dumps(data)
 
-    # 创建项目对象
-    # project_obj = Project(**request.form)
-
     # 创建数据库链接会话
     sql_session = Session()
 
-    # 添加项目
-    # sql_session.add(project_obj)
+    # 判断项目是否存在
+    obj_ = sql_session.query(Project).filter_by(project_name=project_name)
+    if not obj_:
+        # 创建项目对象
+        project_obj = Project(**request.form)
+
+        # 添加项目
+        sql_session.add(project_obj)
 
     # 对docx文件进行操作
     if file_type == "docx":
@@ -59,21 +62,27 @@ def project_upload():
     return json.dumps(data)
 
 
-@views.route("/project/tables", methods=["POST"])
+@views.route("/project/tables")
 def project_tables():
 
+    data = {
+        "code": 0,
+        "data": []
+    }
     # 获取项目名称
-    project_name = request.form.get("project_name")
+    project_name = request.args.get("project_name")
+    if not project_name:
+        data["code"] = 1
+        return json.dumps(data)
 
     # 创建数据库链接会话
     sql_session = Session()
 
     engineerings = sql_session.query(Project2Engineering.engineering_name).filter_by(project_name=project_name).all()
-    data = {
-        "code": 0,
-    }
+
     if engineerings:
-        data["data"] = [{"project_name": i[0]} for i in engineerings]
+        for i in engineerings:
+            data["data"].append({"project_name": i[0]})
     else:
         data["code"] = 1
         data["msg"] = "项目不存在"
