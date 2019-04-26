@@ -99,7 +99,7 @@
                                 <table class="layui-table" id="upload-table">
                                 </table>
                                 <script type="text/html" id="upload-toolbar">
-                                    <button class="layui-btn" lay-event="edit">编辑</button>
+                                    <button class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
                                 </script>
                             </div>
                         </div>
@@ -109,8 +109,7 @@
                     <div class="layui-form-item layui-layout-admin">
                         <div class="layui-input-block">
                             <div class="layui-footer" style="left: 0;">
-                                <button class="layui-btn" lay-submit="" lay-filter="project-input">保存</button>
-                                <button type="button" class="layui-btn" lay-filter="back">返回</button>
+                                <button type="button" class="layui-btn" id="back">返回</button>
                             </div>
                         </div>
                     </div>
@@ -136,6 +135,8 @@
             , laydate = layui.laydate
             , table =  layui.table;
 
+            var doingReport='';
+
             laydate.render({
                 elem: '#projectTime',
                 format: 'yyyy/MM/dd',
@@ -160,32 +161,68 @@
 
             upload.render({
                 elem: '#upload-type'
-                , url: ''
+                , url: './upload'
                 , auto: false
                 , bindAction: '#upload'
+                , data: {
+                    'project_name': function () {
+                        return $('#projectName').val();
+                    },
+                    'buildTime': function () {
+                        return $('#buildTime').val();
+                    },
+                    'buildingType': function () {
+                        return $('#buildingType').val();
+                    },
+                    'buildingType2': function () {
+                        return $('#buildingType2').val();
+                    },
+                    'buildingScale': function () {
+                        return $('#buildingScale').val();
+                    },
+                    'provider': function () {
+                        return $('#provider').val();
+                    },
+                    'provideTime': function () {
+                        return $('#provideTime').val();
+                    },
+                    'remarks': function () {
+                        return $('#remarks').val();
+                    }
+                }
                 , accept: 'file'
                 , exts: 'docx|xlsx'
                 ,choose: function(obj){
-                    var pName = $('#projectName').val();
-                    if(!pName){
+                    var project_name = $('#projectName').val();
+                    if(!project_name){
                         layer.msg('请先填写项目信息，再选择上传文件！')
                     }else{
                         $('#upload').show();
                     }
-                }
-                , done: function (res) {
-                    table.reload('table-render',{
-                        url:''
+                },before: function(res){
+                    doingReport = layer.msg('文件读取中......', {
+                        icon: 16,
+                        time: 0,
+                        shade: [0.2, '#FFF']
                     });
+                }, done: function (res) {
+                    layer.close(doingReport);
+                    if (res.code === 0){
+                        table.reload('table-render',{
+                            url: '/project/tables?project_name=' + $('#projectName').val()
+                        });
+                    }else{
+                        layer.msg(res.msg);
+                    } 
                 }
             });
 
             table.render({
                 elem:'#upload-table'
-                ,url:'/'
                 ,id:'table-render'
+                ,url: '/project/tables?project_name='
                 ,cols:[[
-                {field:'filename',title:'内容'}
+                {field:'engineering_name',title:'内容'}
                 ,{title:'操作',toolbar:'#upload-toolbar'}
                 ]]
             });
@@ -204,22 +241,8 @@
                 }
             });
 
-            form.on('submit(project-input)', function (data) {
-                data = data.field;
-                var filename = $('#upload-list').find('td').eq(0).text();
-                if (filename) {
-                    data['file'] = filename;
-                    $.post('/project/submit', data, function (res) {
-                        layer.msg(res);
-                    });
-                } else {
-                    layer.msg('请上传文件...');
-                }
-                return false;
-            });
-
             $('#back').click(function(){
-                window.location.href="../";
+                window.location.href="./";
             });
         });
     </script>
