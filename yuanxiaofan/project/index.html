@@ -21,12 +21,12 @@
                     </div>
                     <div class="layui-card-body">
                         <div class="layui-form-item project-btn">
-                            <label class="layui-form-label">项目名称：</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="project_name" id="project_name" placeholder="请输入项目名称："
+                                <input type="text" name="project_name" id="project_name" placeholder=""
                                        class="layui-input">
                             </div>
                             <button class="layui-btn layui-btn-primary" data-type="reload">搜索</button>
+
                             <a class="layui-btn" href="new.html">新建</a>
                         </div>
 
@@ -91,38 +91,6 @@
                 window.location.href='edit.html';
             }
         });
-
-
-
-        var active = {
-            reload: function () {
-                var project_name = $('#project_name');
-                table.reload('project-table', {
-                    page: {
-                        curr: 1
-                    }
-                    , where: {
-                        project_name: project_name.val()
-                    }
-                })
-            }
-            , clear: function () {
-                $('#project_name').val('');
-                table.reload('project-table', {
-                    page: {
-                        curr: 1
-                    }
-                    , where: {
-                        project_name: ''
-                    }
-                })
-            }
-        };
-        $('.project-btn .layui-btn').on('click', function () {
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
-        })
-
     });
 
 </script>

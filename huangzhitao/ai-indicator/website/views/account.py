@@ -6,10 +6,11 @@ __author__ = "HuangZhiTao"
 import json
 from flask import request, session
 from sqlalchemy import func
-from . import accout
-from website.model import Session, Users
+from . import views
+from website.model import Session, Account
 
-@accout.route("/login", methods=["POST"])
+
+@views.route("/login", methods=["POST"])
 def login():
     """用户登陆验证"""
 
@@ -24,7 +25,7 @@ def login():
     user = request.form.get("user")
     passwd = request.form.get("passwd")
     # 数据库认证用户信息
-    permission_ = sql_session.query(Users).filter_by(user=user, passwd=passwd).first()
+    permission_ = sql_session.query(Account).filter_by(user=user, passwd=passwd).first()
     sql_session.close()
     if permission_:
         session["user"] = user
@@ -37,7 +38,7 @@ def login():
     return json.dumps(data)
 
 
-@accout.route("/account/details", methods=["GET", "POST"])
+@views.route("/account/details", methods=["GET", "POST"])
 def details():
     """获取用户信息"""
     # response数据格式
@@ -63,7 +64,7 @@ def details():
         start_num = (current_page-1)*limit
 
         # 获取数据量
-        count = sql_session.query(func.count(Users.id)).first()
+        count = sql_session.query(func.count(Account.id)).first()
         if not count:
             data["code"] = 0
             data["msg"] = "用户信息为空"
@@ -74,7 +75,7 @@ def details():
             start_num = (count // limit)*limit
 
         # 获取当前页的数据
-        current_page_data = sql_session.query(Users.user, Users.passwd, ).filter(Users.permission != 0).offset(start_num).limit(limit).all()
+        current_page_data = sql_session.query(Account.user, Account.passwd, ).filter(Account.permission != 0).offset(start_num).limit(limit).all()
         data["count"] = count - 1
         # #构造返回数据
         for user, passwd in current_page_data:
@@ -89,7 +90,7 @@ def details():
         # 获取查询用户名关键字
         keyword = request.form.get("keyword")
 
-        user_data = sql_session.query(Users.id, Users.user, Users.passwd, Users.permission,).filter(Users.user.like(f"%{keyword}%")).all()
+        user_data = sql_session.query(Account.id, Account.user, Account.passwd, Account.permission,).filter(Account.user.like(f"%{keyword}%")).all()
         if user_data:
             for i in user_data:
                 data["data"].append({
@@ -105,7 +106,7 @@ def details():
     return json.dumps(data)
 
 
-@accout.route("/account/insert", methods=["POST"])
+@views.route("/account/insert", methods=["POST"])
 def accout_insert():
     """增加用户账号"""
 
@@ -121,11 +122,11 @@ def accout_insert():
     sql_session = Session()
 
     # 去重用户名
-    dup_user = sql_session.query(Users.user).filter_by(user=user).all()
+    dup_user = sql_session.query(Account.user).filter_by(user=user).all()
     if dup_user:
         data["code"] = 1
     else:
-        user_obj = Users(user=user, passwd=passwd, permission=permission)
+        user_obj = Account(user=user, passwd=passwd, permission=permission)
         sql_session.add(user_obj)
         sql_session.commit()
     sql_session.close()
@@ -133,7 +134,7 @@ def accout_insert():
     return json.dumps(data)
 
 
-@accout.route("/account/delete", methods=["POST"])
+@views.route("/account/delete", methods=["POST"])
 def accout_delete():
     """删除用户账号"""
 
@@ -143,7 +144,7 @@ def accout_delete():
     passwd = request.form.get("passwd")
 
     sql_session = Session()
-    user_obj = sql_session.query(Users).filter_by(user=user, passwd=passwd)
+    user_obj = sql_session.query(Account).filter_by(user=user, passwd=passwd)
 
     if user_obj.all():
         user_obj.delete()
@@ -155,7 +156,7 @@ def accout_delete():
     return json.dumps(data)
 
 
-@accout.route("/account/update", methods=["GET", "POST"])
+@views.route("/account/update", methods=["GET", "POST"])
 def account_update():
     """用户信息更改"""
 
@@ -169,17 +170,16 @@ def account_update():
 
     if request.method == "GET":
         user = request.args.get("user")
-        user_obj = sql_session.query(Users).filter_by(user=user).first()
+        user_obj = sql_session.query(Account).filter_by(user=user).first()
         if user_obj:
             data["data"].append({"user": user, "passwd": user_obj.passwd}),
 
     elif request.method == "POST":
         user = request.form.get("user")
         passwd = request.form.get("passwd")
-        print(user, passwd)
-        user_obj = sql_session.query(Users).filter_by(user=user).first()
+        user_obj = sql_session.query(Account).filter_by(user=user).first()
         if user_obj:
-            sql_session.query(Users).filter_by(user=user).update({Users.passwd: passwd})
+            sql_session.query(Account).filter_by(user=user).update({Account.passwd: passwd})
             sql_session.commit()
         else:
             data["code"] = 1
