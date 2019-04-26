@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Ai指标系统</title>
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="./res/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../res/layuiadmin/layui/css/layui.css" media="all">
     <style type="text/css">
         body {
             overflow: hidden;
@@ -33,13 +33,13 @@
 </head>
 
 <body>
-<img class="background" src="./res/images/bgimg03.jpg">
+<img class="background" src="../res/images/bgimg03.jpg">
 <div class="login">
     <form class="layui-form" action="/login" method="post">
         <div class="user" style="padding: 18%;">
             <div class="layui-form-item" style="margin-bottom: 30px;">
                 <div style="font-size: 20px;">
-                    <img src="res/images/logo.png" alt="" width="55px" height="35px" style="float:left;">
+                    <img src="../res/images/logo.png" alt="" width="55px" height="35px" style="float:left;">
                     <p style="color: #ffffff;font-size: 26px">大华智能建筑指标系统</p>
                 </div>
             </div>
@@ -55,7 +55,7 @@
         </div>
     </form>
 </div>
-<script src="./res/layuiadmin/layui/layui.js"></script>
+<script src="../res/layuiadmin/layui/layui.js"></script>
 <script>
     layui.use(['element', 'form', 'jquery'], function () {
         var element = layui.element;
@@ -65,20 +65,18 @@
         form.on('submit(login)', function (data) {
             data = data.field;
 
-            $.get('./json/login_success.json', data, function (res) {
+            $.post('../json/login_success.json', data, function (res) {
             // $.post('./login', data, function (res) {
             //     res = JSON.parse(res);
+                console.log(res);
                 dd = res.data[0];
                 if (res.code === 0) {
                     window.sessionStorage.setItem('user', dd['user']);
                     window.sessionStorage.setItem('permission', dd['permission']);
-                    window.location.href = 'home.html';
+                    window.location.href = '../home.html';
                 } else {
                     layer.msg(res.msg);
                 }
-
-
-
             });
             return false;
         });

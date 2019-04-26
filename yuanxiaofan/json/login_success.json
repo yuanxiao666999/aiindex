@@ -1,4 +1,9 @@
 {
   "code": 0,
-  "permission": "0"
+  "data": [
+    {
+      "user": "test111",
+      "permission": 1
+    }
+  ]
 }

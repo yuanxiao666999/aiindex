@@ -36,7 +36,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">建筑类型：</label>
                             <div class="layui-input-inline">
-                                <select name="buildingType" id="buildingType"lay-filter="buildingType"
+                                <select name="buildingType" id="buildingType" lay-filter="buildingType"
                                         lay-verify="required">
                                     <option value="">请选择</option>
                                     <option value="商品住宅">商品住宅</option>
@@ -60,7 +60,7 @@
                             <div class="layui-inline" style="display: none" id="buildingScale">
                                 <label class="layui-form-label">建筑面积：</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="buildingScale" lay-verify="required|number"
+                                    <input type="text" name="buildingScale" id="buildingScale" lay-verify="required|number"
                                            autocomplete="off" placeholder="单位：平方米（m2)" class="layui-input">
                                 </div>
                             </div>
@@ -81,7 +81,7 @@
                             <div class="layui-col-md6">
                                 <label class="layui-form-label">备注 ：</label>
                                 <div class="layui-input-block">
-                                    <textarea name="remarks" id="remarks" class="layui-textarea"></textarea>
+                                    <textarea name="remarks" id="remarks" class="layui-textarea" ></textarea>
                                 </div>
                             </div>
                         </div>
@@ -142,22 +142,28 @@
             format: 'yyyy/MM/dd',
         });
 
-        var mydate = new Date;
-        var year = mydate.getFullYear();
-        var mon = mydate.getMonth() + 1;
-        var day = mydate.getDate();
-        var date = year + "/" + (mon < 10 ? "0" + mon : mon) + "/" + day;
-        $('#provideTime').attr("value", date);
+        /*        var mydate = new Date;
+                var year = mydate.getFullYear();
+                var mon = mydate.getMonth() + 1;
+                var day = mydate.getDate();
+                var date = year + "/" + (mon < 10 ? "0" + mon : mon) + "/" + day;
+                $('#provideTime').attr("value", date);
 
-        var user = window.sessionStorage.getItem("user");
-        $('#provider').attr("value", user);
+                var user = window.sessionStorage.getItem("user");
+                $('#provider').attr("value", user);*/
 
         var project = JSON.parse(window.sessionStorage.getItem("projectInformation"));
-        $('#projectName').attr("value", project['projectName']);
-        $('#buildTime').attr("value", project['buildTime']);
-        $('#buildingType').attr("value", project['buildingType']);
-        $('#provider').attr("value", project['provider']);
-        $('#provideTime').attr("value", project['provideTime']);
+        /*        $('#projectName').attr("value", project['projectName']);
+                $('#buildTime').attr("value", project['buildTime']);
+                $('#buildingType').attr("value", project['buildingType']);
+                $('#buildingType2').attr("value", project['buildingType2']);
+                $('#buildingScale').attr("value", project['buildingScale']);
+                $('#provider').attr("value", project['provider']);
+                $('#provideTime').attr("value", project['provideTime']);*/
+
+        for (var key in project) {
+            $('#' + key).attr('value', project['' + key])
+        }
 
         form.on('select(buildingType)', function (data) {
             if (data.value == '商品住宅') {
@@ -182,7 +188,7 @@
             , url: ''
             , accept: 'file'
             , exts: 'docx|xls'
-            ,before: function(obj){
+            , before: function (obj) {
                 var pName = $('#projectName').val();
                 console.log(pName);
             }

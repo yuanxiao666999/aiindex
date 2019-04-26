@@ -27,7 +27,7 @@
                                        class="layui-input">
                             </div>
                             <button class="layui-btn layui-btn-primary" data-type="reload">搜索</button>
-                            <a class="layui-btn" href="input.html">新建</a>
+                            <a class="layui-btn" href="new.html">新建</a>
                         </div>
 
                         <table id="project-table" lay-filter="project-table"></table>
@@ -55,7 +55,7 @@
 
         table.render({
             elem: '#project-table'
-            , url: '../json/project_history.json'
+            , url: '../json/project_index.json'
             , page: true
             , id: 'tableReload'
             , cols: [[
