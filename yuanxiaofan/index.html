@@ -63,14 +63,15 @@
         var $ = layui.jquery;
 
         form.on('submit(login)', function (data) {
+            data = data.field;
+
             $.post('./login', data, function (res) {
                 res = JSON.parse(res);
-                data = res.data;
+                dd = res.data[0];
                 if (res.code === 0) {
-                    window.sessionStorage.setItem('user',data['user']);
-                    window.sessionStorage.setItem('permission',String(data['permission']));
+                    window.sessionStorage.setItem('user', dd['user']);
+                    window.sessionStorage.setItem('permission', dd['permission']);
                     window.location.href = 'home.html';
-
                 } else {
                     layer.msg(res.msg);
                 }
