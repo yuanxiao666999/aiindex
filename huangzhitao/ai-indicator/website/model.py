@@ -54,9 +54,8 @@ class EngineeringSurvey(Base):
 
     id = Column(Integer, primary_key=True)
     project_name = Column(String(255), nullable=False)  # 父类项目
-    engineering_name = Column(String(500), index=True, nullable=False)  # 工程名称
+    engineering_name = Column(String(255), index=True, nullable=False)  # 工程名称
     content = Column(String(500), index=True, nullable=False)  # 内容
-    # parent_project_id = Column(String(500), nullable=False)  # 父类项目I
 
 
 class EngineeringFeatures(Base):
@@ -65,9 +64,8 @@ class EngineeringFeatures(Base):
 
     id = Column(Integer, primary_key=True)
     project_name = Column(String(255), nullable=False)  # 父类项目
-    engineering_name = Column(String(500), index=True, nullable=False)  # 工程名称
+    engineering_name = Column(String(255), nullable=False)  # 工程名称
     desc = Column(String(500), index=True, nullable=False)  # 特征描述
-    # parent_project_id = Column(Integer, nullable=False)  # 父类项目ID
 
 
 class EngineeringZJHZ(Base):
@@ -77,6 +75,7 @@ class EngineeringZJHZ(Base):
     id = Column(Integer, primary_key=True)
     project_name = Column(String(255), nullable=False)  # 父类项目
     s_number = Column(Integer, nullable=False)  # 序号
+    engineering_name = Column(String(255), nullable=False)  # 工程名称
     cost = Column(String(100), nullable=False)  # 造价（万元）
     square_cost = Column(String(100), nullable=False)  # 平方米造价（元/m2）
     sum_prop = Column(String(100), nullable=False)  # 占总造价比例（%）
@@ -89,9 +88,24 @@ class EngineeringFBFX(Base):
     id = Column(Integer, primary_key=True)
     project_name = Column(String(255), nullable=False)  # 父类项目
     s_number = Column(Integer, nullable=False)  # 序号
+    engineering_name = Column(String(255), nullable=False)  # 工程名称
     cost = Column(String(100), nullable=False)  # 造价（万元）
     square_cost = Column(String(100), nullable=False)  # 平方米造价（元/m2）
     sum_prop = Column(String(100), nullable=False)  # 占总造价比例（%）
+
+
+class EngineeringCSXM(Base):
+    """措施项目造价指标"""
+    __tablename__ = 'project_engineering_csxm'
+
+    id = Column(Integer, primary_key=True)
+    project_name = Column(String(255), nullable=False)  # 父类项目
+    s_number = Column(Integer, nullable=False)  # 序号
+    engineering_name = Column(String(255), nullable=False)  # 工程名称
+    cost = Column(String(100), nullable=False)  # 造价（万元）
+    square_cost = Column(String(100), nullable=False)  # 平方米造价（元/m2）
+    sum_prop = Column(String(100), nullable=False)  # 占总造价比例（%）
+
 
 engine = create_engine(
     "mysql+pymysql://root:root@192.168.1.10:3306/aiindex?charset=utf8",
