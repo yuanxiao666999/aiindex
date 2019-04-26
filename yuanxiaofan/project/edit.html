@@ -69,13 +69,12 @@
                             <label class="layui-form-label">提供者：</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="provider" id="provider" placeholder="提供者"
-                                       autocomplete="off"
-                                       readonly class="layui-input">
+                                       autocomplete="off" disabled="disabled" class="layui-input">
                             </div>
                             <label class="layui-form-label">提供时间：</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="provideTime" id="provideTime" placeholder="yyyy/MM/dd"
-                                       autocomplete="off" readonly class="layui-input">
+                                       autocomplete="off" disabled class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -157,22 +156,12 @@
         var user = window.sessionStorage.getItem("user");
         $('#provider').attr("value", user);
 
-        /*var num = -1;
-        num++;
-        var pro = window.sessionStorage.getItem("projectName" + num);
-        console.log(pro);
-        $('#' + 'projectName' + num).attr("value", pro);*/
-
-       var projectName = window.sessionStorage.getItem("projectName");
-        var buildTime = window.sessionStorage.getItem("buildTime");
-        var buildingType = window.sessionStorage.getItem("buildingType");
-        var provider =  window.sessionStorage.getItem("provider");
-        var provideTime =  window.sessionStorage.getItem("provideTime");
-        $('#projectName').attr("value", projectName);
-        $('#buildTime').attr("value", buildTime);
-        $('#buildingType').attr("value", buildingType);
-        $('#provider').attr("value", provider);
-        $('#provideTime').attr("value", provideTime);
+       var project = JSON.parse(window.sessionStorage.getItem("projectInformation"));
+        $('#projectName').attr("value", project['projectName']);
+        $('#buildTime').attr("value", project['buildTime']);
+        $('#buildingType').attr("value", project['buildingType']);
+        $('#provider').attr("value", project['provider']);
+        $('#provideTime').attr("value", project['provideTime']);
 
         form.on('select(buildingType)', function (data) {
             if (data.value == '商品住宅') {
