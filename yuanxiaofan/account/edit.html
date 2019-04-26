@@ -79,7 +79,7 @@
             $.post('/account/update', data, function (res) {
                 res  =  JSON.parse(res);
                 if (res.code === 0) {
-                    alert(res.msg);
+                    alert('保存成功！');
                     window.location.href='/account/'
                 }else{
                     layer.msg(res.msg);
