@@ -65,9 +65,9 @@
         form.on('submit(login)', function (data) {
             data = data.field;
 
-            $.get('./json/login_success.json', data, function (res) {
-            // $.post('./login', data, function (res) {
-            //     res = JSON.parse(res);
+            // $.get('./json/login_success.json', data, function (res) {
+            $.post('./login', data, function (res) {
+                res = JSON.parse(res);
                 dd = res.data[0];
                 if (res.code === 0) {
                     window.sessionStorage.setItem('user', dd['user']);
