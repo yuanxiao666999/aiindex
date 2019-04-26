@@ -163,6 +163,11 @@
                 , url: ''
                 , auto: false
                 , bindAction: '#upload'
+                , data: {
+                    'project_name': function () {
+                        return $('#projectName').val();
+                    }
+                }
                 , accept: 'file'
                 , exts: 'docx|xlsx'
                 ,choose: function(obj){
