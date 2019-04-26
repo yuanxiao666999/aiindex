@@ -73,7 +73,7 @@ def project_tables():
         "code": 0,
     }
     if engineerings:
-        data["data"] = [i[0] for i in engineerings]
+        data["data"] = [{"project_name": i[0]} for i in engineerings]
     else:
         data["code"] = 1
         data["msg"] = "项目不存在"
