@@ -5,17 +5,17 @@ __author__ = "HuangZhiTao"
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Text
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Column, Integer, String, Text, ForeignKey
+from sqlalchemy.orm import sessionmaker, relationship
 # from settings import SQLALCHEMY_DATABASE_URI
 
 
 Base = declarative_base()
 
 
-class Users(Base):
+class Account(Base):
     """用户信息表"""
-    __tablename__ = 'user'
+    __tablename__ = 'account'
 
     id = Column(Integer, primary_key=True)
     user = Column(String(32), index=True, nullable=False, comment="用户名")
@@ -35,35 +35,72 @@ class Project(Base):
     """项目信息表"""
     __tablename__ = 'projects'
 
-    pid = Column(Integer, primary_key=True, comment="项目ID")
-    project_name = Column(String(255), index=True, nullable=False, comment="项目名称")
-    build_type = Column(String(100), nullable=False, comment="建筑类型")
-    build_date = Column(String(32), nullable=False, comment="建筑时间")
-    provider = Column(String(32), nullable=False, comment="提供者")
-    provider_date = Column(String(32), nullable=False, comment="提供时间")
-    remarks = Column(Text, nullable=False, comment="备注")
+    pid = Column(Integer, primary_key=True)  # 项目ID
+    project_name = Column(String(255), index=True, nullable=False)  # 项目名称
+    build_type = Column(String(100), nullable=False)  # 建筑类型
+    build_date = Column(String(32), nullable=False)  # 建筑时间
+    provider = Column(String(32), nullable=False)  # 提供者
+    provider_date = Column(String(32), nullable=False)  # 提供时间
+    remarks = Column(Text, nullable=False)  # 备注
     # sub_project = Column(String(255), nullable=False, comment="子类工程表名称")
 
 
-class EngineeringSurvey(Base):
-    """工程概况表"""
-    __tablename__ = 'project_engineering_survey'
+class Project2Engineering(Base):
+    """项目信息对应工程表"""
+    __tablename__ = 'project2engineering'
 
     id = Column(Integer, primary_key=True)
-    project_name = Column(String(500), index=True, nullable=False, comment="项目名称")
-    content = Column(String(500), index=True, nullable=False, comment="内容")
-    parent_project_id = Column(Integer, nullable=False, comment="父类项目ID")
+    project_name = Column(String(500), index=True, nullable=False)  # 项目名称
+    engineering_name = Column(String(500), index=True, nullable=False)  # 工程名称
 
 
-class EngineeringFeatures(Base):
-    """工程特征表"""
-    __tablename__ = 'project_engineering_features'
+# class EngineeringSurvey(Base):
+#     """工程概况表"""
+#     __tablename__ = 'project_engineering_survey'
+#
+#     id = Column(Integer, primary_key=True)
+#     engineering_name = Column(String(500), index=True, nullable=False)  # 工程名称
+#     content = Column(String(500), index=True, nullable=False)  # 内容
+#     parent_project_id = Column(String(500), nullable=False)  # 父类项目I
 
+#
+# class EngineeringFeatures(Base):
+#     """工程特征表"""
+#     __tablename__ = 'project_engineering_features'
+#
+#     id = Column(Integer, primary_key=True)
+#     engineering_name = Column(String(500), index=True, nullable=False)  # 项目名称
+#     desc = Column(String(500), index=True, nullable=False)  # 特征描述
+#     parent_project_id = Column(Integer, nullable=False)  # 父类项目ID
+
+"""
+class MyClass(Base):
+    __tablename__ = 'mytable'
     id = Column(Integer, primary_key=True)
-    project_name = Column(String(500), index=True, nullable=False, comment="项目名称")
-    desc = Column(String(500), index=True, nullable=False, comment="特征描述")
-    parent_project_id = Column(Integer, nullable=False, comment="父类项目ID")
+    children = relationship("MyOtherClass",
+                            cascade="all, delete-orphan",
+                            passive_deletes=True)
+    children2 = relationship("MyOtherClass2",
+                            cascade="all, delete-orphan",
+                            passive_deletes=True)
 
+
+class MyOtherClass(Base):
+    __tablename__ = 'myothertable'
+    id = Column(Integer, primary_key=True)
+    parent_id = Column(Integer,
+                       ForeignKey('mytable.id', ondelete='CASCADE')
+                       )
+
+
+class MyOtherClass2(Base):
+    __tablename__ = 'myothertable2'
+    id = Column(Integer, primary_key=True)
+    parent_id = Column(Integer,
+                       ForeignKey('mytable.id', ondelete='CASCADE')
+                       )
+
+"""
 
 engine = create_engine(
     "mysql+pymysql://root:111@127.0.0.1:3306/ai?charset=utf8",
@@ -73,11 +110,11 @@ engine = create_engine(
     pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
 )
 
-
+#
 Session = sessionmaker(bind=engine)
 
 
-#
+# #
 # def init_db():
 #     """
 #     根据类创建数据库表
@@ -92,10 +129,10 @@ Session = sessionmaker(bind=engine)
 #     )
 #
 #     Base.metadata.create_all(engine)
-
-
+#
+#
 # if __name__ == '__main__':
-    # init_db()
-
-
+#     init_db()
+#
+#
 
