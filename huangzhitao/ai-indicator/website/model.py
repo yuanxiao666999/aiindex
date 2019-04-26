@@ -5,15 +5,16 @@ __author__ = "HuangZhiTao"
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Text
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Column, Integer, String, Text, ForeignKey
+from sqlalchemy.orm import sessionmaker, relationship
 # from settings import SQLALCHEMY_DATABASE_URI
 
 
 Base = declarative_base()
 
 
-class Users(Base):
+class Account(Base):
+    """用户信息表"""
     __tablename__ = 'account'
 
     id = Column(Integer, primary_key=True)
@@ -34,67 +35,32 @@ class Project(Base):
     """项目信息表"""
     __tablename__ = 'projects'
 
-    pid = Column(Integer, primary_key=True)
-    project_name = Column(String(255), index=True, nullable=False)
-    build_type = Column(String(100), nullable=False)
-    build_date = Column(String(32), nullable=False)
-    provider = Column(String(32), nullable=False)
-    provider_date = Column(String(32), nullable=False)
-    remarks = Column(Text, nullable=False)
-    # sub_project = Column(String(255), nullable=False)
+    pid = Column(Integer, primary_key=True)  # 项目ID
+    project_name = Column(String(255), index=True, nullable=False)  # 项目名称
+    build_type = Column(String(100), nullable=False)  # 建筑类型
+    build_date = Column(String(32), nullable=False)  # 建筑时间
+    provider = Column(String(32), nullable=False)  # 提供者
+    provider_date = Column(String(32), nullable=False)  # 提供时间
+    remarks = Column(Text, nullable=False)  # 备注
+    # sub_project = Column(String(255), nullable=False, comment="子类工程表名称")
 
 
-class EngineeringSurvey(Base):
-    """工程概况表"""
-    __tablename__ = 'project_engineering_survey'
-
-    id = Column(Integer, primary_key=True)
-    project_name = Column(String(500), index=True, nullable=False)
-    content = Column(String(500), index=True, nullable=False)
-    parent_project_id = Column(Integer, nullable=False)
-
-
-class EngineeringFeatures(Base):
-    """工程特征表"""
-    __tablename__ = 'project_engineering_features'
+class Project2Engineering(Base):
+    """项目信息对应工程表"""
+    __tablename__ = 'project2engineering'
 
     id = Column(Integer, primary_key=True)
-    project_name = Column(String(500), index=True, nullable=False)
-    desc = Column(String(500), index=True, nullable=False)
-    parent_project_id = Column(Integer, nullable=False)
+    project_name = Column(String(500), index=True, nullable=False)  # 项目名称
+    engineering_name = Column(String(500), index=True, nullable=False)  # 工程名称
 
 
 engine = create_engine(
-    "mysql+pymysql://root:root@127.0.0.1:3306/aiindex?charset=utf8",
+    "mysql+pymysql://root:root@192.168.1.10:3306/aiindex?charset=utf8",
     max_overflow=0,  # 超过连接池大小外最多创建的连接
     pool_size=5,  # 连接池大小
     pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错
     pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
 )
 
-
+#
 Session = sessionmaker(bind=engine)
-
-
-#
-# def init_db():
-#     """
-#     根据类创建数据库表
-#     :return:
-#     """
-#     engine = create_engine(
-#         "mysql+pymysql://root:111@127.0.0.1:3306/ai?charset=utf8",
-#         max_overflow=0,  # 超过连接池大小外最多创建的连接
-#         pool_size=5,  # 连接池大小
-#         pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错
-#         pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
-#     )
-#
-#     Base.metadata.create_all(engine)
-
-
-# if __name__ == '__main__':
-    # init_db()
-
-
-

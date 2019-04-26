@@ -6,7 +6,7 @@ __author__ = "HuangZhiTao"
 from flask import Blueprint
 
 
-accout = Blueprint(
+views = Blueprint(
     "accout",
     __name__,
     template_folder="templates",
@@ -14,4 +14,6 @@ accout = Blueprint(
 )
 
 
-from . import account
+from . import account, project
+# from . import project
+
