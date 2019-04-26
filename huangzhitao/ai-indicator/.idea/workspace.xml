@@ -12,11 +12,39 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/ai_indicator$manage.coverage" NAME="manage Coverage Results" MODIFIED="1556261900813" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/ai_indicator$model.coverage" NAME="model Coverage Results" MODIFIED="1556261639454" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/website" />
+    <SUITE FILE_PATH="coverage/ai_indicator$manage.coverage" NAME="manage Coverage Results" MODIFIED="1556265545413" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ai_indicator$model.coverage" NAME="model Coverage Results" MODIFIED="1556263819975" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/website" />
   </component>
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/website/model.py">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="600">
+                    <caret line="34" column="48" selection-start-line="34" selection-start-column="48" selection-end-line="34" selection-end-column="48" />
+                    <folding>
+                      <element signature="e#77#113#0" expanded="true" />
+                      <element signature="e#677#1138#0" />
+                      <element signature="e#1572#1967#0" />
+                      <element signature="e#1994#2314#0" />
+                      <element signature="e#2358#2775#0" />
+                      <element signature="e#2718#2970#0" />
+                      <element signature="e#3287#3698#0" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
   </component>
   <component name="FileEditorManager">
     <leaf>
@@ -29,43 +57,30 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/website/views/project.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="307">
+              <caret line="54" column="22" selection-start-line="54" selection-start-column="22" selection-end-line="54" selection-end-column="22" />
+              <folding>
+                <element signature="e#76#87#0" expanded="true" />
+                <element signature="e#1547#1996#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/website/views/account.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="251">
-              <caret line="105" lean-forward="true" selection-start-line="105" selection-end-line="105" />
+            <state relative-caret-position="1189">
+              <caret line="108" column="20" selection-start-line="108" selection-start-column="20" selection-end-line="108" selection-end-column="20" />
               <folding>
                 <element signature="e#76#87#0" expanded="true" />
                 <element signature="e#274#858#0" />
-                <element signature="e#938#2865#0" />
                 <element signature="e#2943#3498#0" />
                 <element signature="e#3576#3963#0" />
                 <element signature="e#4049#4964#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/website/model.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="107" column="25" lean-forward="true" selection-start-line="107" selection-start-column="25" selection-end-line="107" selection-end-column="25" />
-              <folding>
-                <element signature="e#77#113#0" expanded="true" />
-                <element signature="e#2617#3489#1" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/website/views/project.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="161" column="35" lean-forward="true" selection-start-line="161" selection-start-column="35" selection-end-line="161" selection-end-column="35" />
-              <folding>
-                <element signature="e#76#87#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -157,15 +172,15 @@
         <option value="$PROJECT_DIR$/website/__init__.py" />
         <option value="$PROJECT_DIR$/utils/read_docx.py" />
         <option value="$PROJECT_DIR$/website/views/account.py" />
-        <option value="$PROJECT_DIR$/website/views/project.py" />
         <option value="$PROJECT_DIR$/website/model.py" />
+        <option value="$PROJECT_DIR$/website/views/project.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="404" />
-    <option name="y" value="27" />
-    <option name="width" value="1375" />
+    <option name="x" value="169" />
+    <option name="y" value="38" />
+    <option name="width" value="1705" />
     <option name="height" value="927" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -290,23 +305,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1556013286112</updated>
-      <workItem from="1556013287363" duration="42565000" />
+      <workItem from="1556013287363" duration="46706000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="42565000" />
+    <option name="totallyTimeSpent" value="46706000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="570" y="64" width="1375" height="927" extended-state="0" />
+    <frame x="169" y="38" width="1705" height="927" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19923954" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15927051" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49910071" visible="true" weight="0.18985696" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49910071" visible="true" weight="0.11313394" />
       <window_info anchor="bottom" id="Version Control" order="3" />
       <window_info anchor="bottom" id="Python Console" order="4" />
       <window_info anchor="bottom" id="Terminal" order="5" weight="0.16935484" />
@@ -439,21 +454,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/views/account.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="251">
-          <caret line="105" lean-forward="true" selection-start-line="105" selection-end-line="105" />
-          <folding>
-            <element signature="e#76#87#0" expanded="true" />
-            <element signature="e#274#858#0" />
-            <element signature="e#938#2865#0" />
-            <element signature="e#2943#3498#0" />
-            <element signature="e#3576#3963#0" />
-            <element signature="e#4049#4964#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../env_project/env_flask/Lib/site-packages/sqlalchemy/orm/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="169">
@@ -475,23 +475,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/views/project.py">
+    <entry file="file://$PROJECT_DIR$/website/views/account.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="161" column="35" lean-forward="true" selection-start-line="161" selection-start-column="35" selection-end-line="161" selection-end-column="35" />
+        <state relative-caret-position="1189">
+          <caret line="108" column="20" selection-start-line="108" selection-start-column="20" selection-end-line="108" selection-end-column="20" />
           <folding>
             <element signature="e#76#87#0" expanded="true" />
+            <element signature="e#274#858#0" />
+            <element signature="e#2943#3498#0" />
+            <element signature="e#3576#3963#0" />
+            <element signature="e#4049#4964#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/website/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="107" column="25" lean-forward="true" selection-start-line="107" selection-start-column="25" selection-end-line="107" selection-end-column="25" />
+        <state relative-caret-position="600">
+          <caret line="34" column="48" selection-start-line="34" selection-start-column="48" selection-end-line="34" selection-end-column="48" />
           <folding>
             <element signature="e#77#113#0" expanded="true" />
-            <element signature="e#2617#3489#1" />
+            <element signature="e#677#1138#0" />
+            <element signature="e#1572#1967#0" />
+            <element signature="e#1994#2314#0" />
+            <element signature="e#2358#2775#0" />
+            <element signature="e#2718#2970#0" />
+            <element signature="e#3287#3698#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/views/project.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="54" column="22" selection-start-line="54" selection-start-column="22" selection-end-line="54" selection-end-column="22" />
+          <folding>
+            <element signature="e#76#87#0" expanded="true" />
+            <element signature="e#1547#1996#0" />
           </folding>
         </state>
       </provider>

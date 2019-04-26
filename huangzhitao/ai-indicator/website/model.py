@@ -3,11 +3,10 @@
 __author__ = "HuangZhiTao"
 
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import sessionmaker, relationship
-# from settings import SQLALCHEMY_DATABASE_URI
 
 
 Base = declarative_base()
@@ -21,14 +20,6 @@ class Account(Base):
     user = Column(String(32), index=True, nullable=False)
     passwd = Column(String(32), nullable=False)
     permission = Column(Integer, nullable=False)
-    # email = Column(String(32), unique=True)
-    # ctime = Column(DateTime, default=datetime.datetime.now)
-    # extra = Column(Text, nullable=True)
-
-    __table_args__ = (
-        # UniqueConstraint('id', 'name', name='uix_id_name'),
-        # Index('ix_id_name', 'name', 'email'),
-    )
 
 
 class Project(Base):
@@ -36,13 +27,12 @@ class Project(Base):
     __tablename__ = 'projects'
 
     pid = Column(Integer, primary_key=True)  # 项目ID
-    project_name = Column(String(255), index=True, nullable=False)  # 项目名称
+    project_name = Column(String(255), unique=True, nullable=False)  # 项目名称
     build_type = Column(String(100), nullable=False)  # 建筑类型
     build_date = Column(String(32), nullable=False)  # 建筑时间
     provider = Column(String(32), nullable=False)  # 提供者
     provider_date = Column(String(32), nullable=False)  # 提供时间
     remarks = Column(Text, nullable=False)  # 备注
-    # sub_project = Column(String(255), nullable=False, comment="子类工程表名称")
 
 
 class Project2Engineering(Base):
@@ -50,9 +40,58 @@ class Project2Engineering(Base):
     __tablename__ = 'project2engineering'
 
     id = Column(Integer, primary_key=True)
-    project_name = Column(String(500), index=True, nullable=False)  # 项目名称
-    engineering_name = Column(String(500), index=True, nullable=False)  # 工程名称
+    project_name = Column(String(255), index=True, nullable=False)  # 项目名称
+    engineering_name = Column(String(255), index=True, nullable=False)  # 工程名称
 
+    __table_args__ = (
+        UniqueConstraint('project_name', 'engineering_name', name='uix_pro_eng'),
+    )
+
+
+class EngineeringSurvey(Base):
+    """工程概况表"""
+    __tablename__ = 'project_engineering_survey'
+
+    id = Column(Integer, primary_key=True)
+    project_name = Column(String(255), nullable=False)  # 父类项目
+    engineering_name = Column(String(500), index=True, nullable=False)  # 工程名称
+    content = Column(String(500), index=True, nullable=False)  # 内容
+    # parent_project_id = Column(String(500), nullable=False)  # 父类项目I
+
+
+class EngineeringFeatures(Base):
+    """工程特征表"""
+    __tablename__ = 'project_engineering_features'
+
+    id = Column(Integer, primary_key=True)
+    project_name = Column(String(255), nullable=False)  # 父类项目
+    engineering_name = Column(String(500), index=True, nullable=False)  # 工程名称
+    desc = Column(String(500), index=True, nullable=False)  # 特征描述
+    # parent_project_id = Column(Integer, nullable=False)  # 父类项目ID
+
+
+class EngineeringZJHZ(Base):
+    """工程造价指标汇总"""
+    __tablename__ = 'project_engineering_zjhz'
+
+    id = Column(Integer, primary_key=True)
+    project_name = Column(String(255), nullable=False)  # 父类项目
+    s_number = Column(Integer, nullable=False)  # 序号
+    cost = Column(String(100), nullable=False)  # 造价（万元）
+    square_cost = Column(String(100), nullable=False)  # 平方米造价（元/m2）
+    sum_prop = Column(String(100), nullable=False)  # 占总造价比例（%）
+
+
+class EngineeringFBFX(Base):
+    """分部分项工程造价指标"""
+    __tablename__ = 'project_engineering_fbfx'
+
+    id = Column(Integer, primary_key=True)
+    project_name = Column(String(255), nullable=False)  # 父类项目
+    s_number = Column(Integer, nullable=False)  # 序号
+    cost = Column(String(100), nullable=False)  # 造价（万元）
+    square_cost = Column(String(100), nullable=False)  # 平方米造价（元/m2）
+    sum_prop = Column(String(100), nullable=False)  # 占总造价比例（%）
 
 engine = create_engine(
     "mysql+pymysql://root:root@192.168.1.10:3306/aiindex?charset=utf8",
@@ -62,5 +101,4 @@ engine = create_engine(
     pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
 )
 
-#
 Session = sessionmaker(bind=engine)
