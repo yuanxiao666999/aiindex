@@ -69,12 +69,12 @@
                             <label class="layui-form-label">提供者：</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="provider" id="provider" placeholder="提供者"
-                                       autocomplete="off" disabled="disabled" class="layui-input">
+                                       autocomplete="off" class="layui-input" disabled="">
                             </div>
                             <label class="layui-form-label">提供时间：</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="provideTime" id="provideTime" placeholder="yyyy/MM/dd"
-                                       autocomplete="off" disabled class="layui-input">
+                                       autocomplete="off" class="layui-input" disabled="">
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -141,10 +141,6 @@
             elem: '#projectTime',
             format: 'yyyy/MM/dd',
         });
-        /*laydate.render({
-            elem: '#provideTime',
-            format: 'yyyy/MM/dd',
-        });*/
 
         var mydate = new Date;
         var year = mydate.getFullYear();
@@ -156,7 +152,7 @@
         var user = window.sessionStorage.getItem("user");
         $('#provider').attr("value", user);
 
-       var project = JSON.parse(window.sessionStorage.getItem("projectInformation"));
+        var project = JSON.parse(window.sessionStorage.getItem("projectInformation"));
         $('#projectName').attr("value", project['projectName']);
         $('#buildTime').attr("value", project['buildTime']);
         $('#buildingType').attr("value", project['buildingType']);
@@ -169,12 +165,6 @@
                 $('#buildingScale').show();
             }
         });
-
-        /*form.on('select(underBuilding)', function (data) {
-            if (data.value == '1') {
-                $('#underBuildingScale').show();
-            }
-        });*/
 
         table.render({
             elem: '#upload-table'
@@ -191,17 +181,15 @@
             elem: '#upload-type'
             , url: ''
             , accept: 'file'
-            , acceptMime: 'application/vnd.ms-excel'
-            , exts: 'xls'
+            , exts: 'docx|xls'
+            ,before: function(obj){
+                var pName = $('#projectName').val();
+                console.log(pName);
+            }
             , done: function (res) {
-
                 table.reload('table-render', {
                     url: ''
-                })
-
-            }
-            , error: function () {
-                layer.msg('网络异常！');
+                });
             }
         });
 

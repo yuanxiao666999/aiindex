@@ -44,12 +44,12 @@
 
         table.render({
             elem: '#tableDemo'
-            , url: '../json/account_index.json'
+            , url: '/account/details'
             , page: true
             , id: 'tableReload'
             , cols: [[
-                {field: 'username', title: '账户', sort: true}
-                , {field: 'password', title: '密码', sort: true}
+                {field: 'user', title: '账户', sort: true}
+                , {field: 'passwd', title: '密码', sort: true}
                 , {title: '操作', toolbar: '#tableDemoBar'}
             ]]
         });
@@ -61,7 +61,7 @@
 
             if(obj.event === 'edit'){
                 // window.sessionStorage.setItem("username",data['username']);
-                window.location.href='edit.html?username='+data['username'];
+                window.location.href='edit.html?user='+data['user'];
             }
         });
         

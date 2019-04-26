@@ -23,7 +23,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">项目名称：</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="projectName" lay-verify="required" autocomplete="off"
+                                <input type="text" name="projectName" id="projectName" lay-verify="required" autocomplete="off"
                                        placeholder="请输入项目名称" class="layui-input">
                             </div>
                             <label class="layui-form-label">建筑时间：</label>
@@ -67,12 +67,12 @@
                             <label class="layui-form-label">提供者：</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="provider" id="provider" placeholder="提供者" autocomplete="off"
-                                       readonly class="layui-input">
+                                     class="layui-input" disabled="">
                             </div>
                             <label class="layui-form-label">提供时间：</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="provideTime" id="provideTime" placeholder="yyyy/MM/dd"
-                                       autocomplete="off" readonly class="layui-input">
+                                       autocomplete="off" class="layui-input" disabled="">
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -91,7 +91,10 @@
                         </div>
                         <div class="layui-card-body">
                             <button type="button" class="layui-btn" id="upload-type">
-                                <i class="layui-icon"></i>上传文件
+                                <i class="layui-icon"></i>选择
+                            </button>
+                            <button type="button" class="layui-btn" id="upload" style="display: none;">
+                                <i class="layui-icon"></i>上传
                             </button>
                             <table class="layui-table" id="upload-table">
                                 <!--<thead>
@@ -186,8 +189,8 @@
             ,url:'/'
             ,id:'table-render'
             ,cols:[[
-                {field:'filename',title:'文件名'}
-                ,{fixed:'right',title:'操作',toolbar:'#upload-toolbar'}
+                {field:'filename',title:'内容'}
+                ,{title:'操作',toolbar:'#upload-toolbar'}
             ]]
         });
 
@@ -195,18 +198,23 @@
         upload.render({
             elem: '#upload-type'
             , url: ''
+            , auto: false
+            , bindAction: '#upload'
             , accept: 'file'
-            , acceptMime: 'application/vnd.ms-excel'
-            , exts: 'xls'
+            , exts: 'docx|xlsx'
+            ,choose: function(obj){
+                var pName = $('#projectName').val();
+                if(!pName){
+                    layer.msg('请先填写项目信息，再选择上传文件！')
+                }else{
+                    $('#upload').show();
+                }
+            }
             , done: function (res) {
-
                 table.reload('table-render',{
                     url:''
                 })
 
-            }
-            , error: function () {
-                layer.msg('网络异常！');
             }
         });
 

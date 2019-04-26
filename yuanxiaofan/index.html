@@ -50,7 +50,6 @@
                 <input name="passwd" id="passwd" type="password" class="layui-input" placeholder="密码">
             </div>
             <div class="layui-form-item">
-                <!-- <button class="layui-btn layui-btn-fluid" lay-filter="login">安全登录</button> -->
                 <button class="layui-btn layui-btn-fluid layui-bg-cyan" lay-submit="" lay-filter="login" id="login-btn">安全登录</button>
             </div>
         </div>
@@ -63,28 +62,11 @@
         var form = layui.form;
         var $ = layui.jquery;
 
-        // var username = $('#username').val();
-        // var password = $('#password').val();
-        // var data = {'username':username,'password':password};
-        // data = JSON.stringify(data);
-        //
-        // $.post('/login/',data,function (res) {
-        //     res = JSON.parse(res);
-        //     if(res.code=== 0){
-        //         window.location.href='./home.html';
-        //     }else{
-        //         layer.msg(res.msg);
-        //     }
-        // });
-
-
-
-
         form.on('submit(login)', function (data) {
             data = data.field;
+            $.post('./login', data, function (res) {
+                res = JSON.parse(res);
 
-            $.get('./json/login_success.json', function (res) {
-                // res = JSON.parse(res);
                 if (res.code === 0) {
                     window.sessionStorage.setItem('user',data['user']);
                     window.location.href = 'home.html';
@@ -95,8 +77,6 @@
             });
             return false;
         });
-
-
     });
 </script>
 </body>
