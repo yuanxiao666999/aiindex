@@ -72,7 +72,6 @@ def project_tables():
     # 获取项目名称
     project_name = request.args.get("project_name")
     if not project_name:
-        data["code"] = 1
         return json.dumps(data)
 
     # 创建数据库链接会话
@@ -82,7 +81,7 @@ def project_tables():
 
     if engineerings:
         for i in engineerings:
-            data["data"].append({"project_name": i[0]})
+            data["data"].append({"engineering_name": i[0]})
     else:
         data["code"] = 1
         data["msg"] = "项目不存在"

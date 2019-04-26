@@ -99,7 +99,7 @@
                                 <table class="layui-table" id="upload-table">
                                 </table>
                                 <script type="text/html" id="upload-toolbar">
-                                    <button class="layui-btn" lay-event="edit">编辑</button>
+                                    <button class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
                                 </script>
                             </div>
                         </div>
@@ -135,7 +135,7 @@
             , laydate = layui.laydate
             , table =  layui.table;
 
-            var projectName = $('#projectName').val();
+            var doingReport='';
 
             laydate.render({
                 elem: '#projectTime',
@@ -199,26 +199,30 @@
                     }else{
                         $('#upload').show();
                     }
+                },before: function(res){
+                    doingReport = layer.msg('文件读取中......', {
+                        icon: 16,
+                        time: 0,
+                        shade: [0.2, '#FFF']
+                    });
                 }, done: function (res) {
-                    res = JSON.parse(res);
+                    layer.close(doingReport);
                     if (res.code === 0){
                         table.reload('table-render',{
-                            cur: 1,
+                            url: '/project/tables?project_name=' + $('#projectName').val()
                         });
                     }else{
                         layer.msg(res.msg);
-                    }
-                    
-                    
+                    } 
                 }
             });
 
             table.render({
                 elem:'#upload-table'
                 ,id:'table-render'
-                ,url: '/project/tables?project_name='+projectName
+                ,url: '/project/tables?project_name='
                 ,cols:[[
-                {field:'filename',title:'内容'}
+                {field:'engineering_name',title:'内容'}
                 ,{title:'操作',toolbar:'#upload-toolbar'}
                 ]]
             });
