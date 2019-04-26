@@ -135,6 +135,8 @@
             , laydate = layui.laydate
             , table =  layui.table;
 
+            var projectName = $('#projectName').val();
+
             laydate.render({
                 elem: '#projectTime',
                 format: 'yyyy/MM/dd',
@@ -192,35 +194,33 @@
                 , exts: 'docx|xlsx'
                 ,choose: function(obj){
                     var project_name = $('#projectName').val();
-                    var buildTime = $('#buildTime').val();
-                    var buildingType = $('#buildingType').val();
-                    var buildingType2 = $('#buildingType2').val();
-                    var buildingScale = $('#buildingScale').val();
-                    var provider = $('#provider').val();
-                    var provideTime = $('#provideTime').val();
-                    var remarks = $('#remarks').val();
-                    if(project_name+buildTime+buildingType+buildingType2+buildingScale+provider+provideTime+remarks === ''){
+                    if(!project_name){
                         layer.msg('请先填写项目信息，再选择上传文件！')
                     }else{
                         $('#upload').show();
                     }
                 }, done: function (res) {
                     res = JSON.parse(res);
+                    if (res.code === 0){
+                        table.reload('table-render',{
+                            cur: 1,
+                        });
+                    }else{
+                        layer.msg(res.msg);
+                    }
                     
-                    table.reload('table-render',{
-                        url:''
-                    });
+                    
                 }
             });
 
             table.render({
                 elem:'#upload-table'
                 ,id:'table-render'
+                ,url: '/project/tables?project_name='+projectName
                 ,cols:[[
                 {field:'filename',title:'内容'}
                 ,{title:'操作',toolbar:'#upload-toolbar'}
                 ]]
-                ,data:[]
             });
 
             table.on('tool(upload-toolbar)',function (obj) {
