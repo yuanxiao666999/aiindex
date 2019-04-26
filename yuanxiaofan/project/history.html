@@ -71,6 +71,7 @@
 
         table.on('tool(project-table)', function (obj) {
             var data =obj.data;
+            data = JSON.stringify(data);
             var layEvent = obj.event;
             var name = obj.tr.find('td').eq(0).text();
             if (layEvent === 'del') {
@@ -85,10 +86,7 @@
                     layer.close(index);
                 });
             }else if(layEvent === 'edit'){
-              /*  for(var i=0;i<$('#project-table td').length;i++){
-                    window.sessionStorage.setItem("projectName"+i,data['projectName'+i]);
-                }*/
-                window.sessionStorage.setItem("projectName",data['projectName']);
+                window.sessionStorage.setItem("projectInformation",data);
                 window.location.href='edit.html';
             }
         });
