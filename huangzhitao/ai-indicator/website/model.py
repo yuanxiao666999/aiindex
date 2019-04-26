@@ -103,7 +103,7 @@ class MyOtherClass2(Base):
 """
 
 engine = create_engine(
-    "mysql+pymysql://root:111@127.0.0.1:3306/ai?charset=utf8",
+    "mysql+pymysql://root:root@192.168.1.10:3306/aiindex?charset=utf8",
     max_overflow=0,  # 超过连接池大小外最多创建的连接
     pool_size=5,  # 连接池大小
     pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错
@@ -114,7 +114,7 @@ engine = create_engine(
 Session = sessionmaker(bind=engine)
 
 
-# #
+#
 # def init_db():
 #     """
 #     根据类创建数据库表
@@ -135,4 +135,4 @@ Session = sessionmaker(bind=engine)
 #     init_db()
 #
 #
-
+#
