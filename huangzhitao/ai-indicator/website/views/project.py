@@ -193,7 +193,7 @@ def project_table_update():
 def project_table_delete():
     """项目子表的删除"""
     data = {
-        "code": 0
+        "code": 1
     }
     # 创建数据库链接会话
     sql_session = Session()
@@ -227,6 +227,6 @@ def project_table_delete():
                      Project2Engineering.engineering_name == table_name
                      )).delete()
             sql_session.commit()
-            data["code"] = 1
+            data["code"] = 0
 
     return json.dumps(data)

@@ -25,6 +25,13 @@
                 </div>
             </div>
         </div>
+        <div class="layui-form-item layui-layout-admin">
+            <div class="layui-input-block">
+                <div class="layui-footer" style="left: 0;">
+                    <button type="button" class="layui-btn" id="back">返回</button>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 <script src="../../res/layuiadmin/layui/layui.js"></script>
@@ -43,12 +50,16 @@
 
         table.render({
             elem: '#project-table'
-            , url: '/project/table/details?table_name=gongchenggaikuang&project_name=' + project_name
+            , url: '/project/table/details?table_name=工程概况&project_name=' + project_name
             , page: true
             , cols: [[
                 {field: 'engineering_name', title: '项目名称'}
                 , {field: 'content', title: '内容'}
             ]]
+        });
+
+        $('#back').click(function(){
+            window.history.back(-1);
         });
     });
 
