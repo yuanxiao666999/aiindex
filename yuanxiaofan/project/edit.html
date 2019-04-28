@@ -232,16 +232,16 @@
                     window.location.href = './table/'+table_name+'.html'  
                 }else if(obj.event === 'del'){
                     layer.confirm('确定删除？', function (index) {
-                    $.get(url = '/project/table/delete', {'project_name': project_name, 'table_name':table_name}, function (res) {
-                        res = JSON.parse(res);
-                        if (res.code === 0) {
-                            obj.del();
-                        } else {
-                            alert('删除失败！');
-                        }
+                        $.get(url = '/project/table/delete', {'project_name': project_name, 'table_name':table_name}, function (res) {
+                            res = JSON.parse(res);
+                            if (res.code === 0) {
+                                obj.del();
+                            } else {
+                                alert('删除失败！');
+                            }
+                        });
+                        layer.close(index);
                     });
-                    layer.close(index);
-                });
                 }
             });
 

@@ -96,10 +96,11 @@
                                 <button type="button" class="layui-btn" id="upload" style="display: none;">
                                     <i class="layui-icon"></i>上传
                                 </button>
-                                <table class="layui-table" id="upload-table">
+                                <table class="layui-table" id="upload-table" lay-filter="upload-table">
                                 </table>
                                 <script type="text/html" id="upload-toolbar">
-                                    <button class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
                                 </script>
                             </div>
                         </div>
@@ -227,17 +228,29 @@
                 ]]
             });
 
-            table.on('tool(upload-toolbar)',function (obj) {
+            table.on('tool(upload-table)',function (obj) {
                 var project_name = $('#projectName').val();
                 window.sessionStorage.setItem('project_name', project_name);
                 var table_name = obj.tr.find('td').eq(0).text().trim();
                 if(obj.event === 'edit'){
-                    window.location.href = './table/'+table_name+'.html?'  
+                    window.location.href = './table/'+table_name+'.html'  
+                }else if(obj.event === 'del'){
+                    layer.confirm('确定删除？', function (index) {
+                        $.get(url = '/project/table/delete', {'project_name': project_name, 'table_name':table_name}, function (res) {
+                            res = JSON.parse(res);
+                            if (res.code === 0) {
+                                obj.del();
+                            } else {
+                                alert('删除失败！');
+                            }
+                        });
+                        layer.close(index);
+                    });
                 }
             });
 
             $('#back').click(function(){
-                window.location.href="./";
+                window.history.back(-1);
             });
         });
     </script>

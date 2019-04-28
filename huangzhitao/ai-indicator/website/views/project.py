@@ -41,7 +41,6 @@ def project_upload():
     # 不存在则创建项目，存在则更新项目
     if not project_obj:
         # 创建项目对象
-        print(request.form)
         project_obj = Project(**request.form)
 
         # 添加项目
@@ -94,6 +93,7 @@ def project_tables():
     # 获取项目名称
     project_name = request.args.get("project_name")
     if not project_name:
+        data["code"] = 0
         return json.dumps(data)
 
     # 创建数据库链接会话
@@ -142,10 +142,11 @@ def project_details():
         else:
             data["count"] = count[0]
     else:
-        data['code'] = 1
+        data["code"] = 1
         data["msg"] = "已录入项目为空"
 
     sql_session.close()
+
     return json.dumps(data)
 
 
@@ -180,12 +181,6 @@ def project_delete():
 @views.route("/project/update")
 def project_update():
     """项目信息的修改"""
-    pass
-
-
-@views.route("/project/table/update")
-def project_table_update():
-    """项目子表信息的修改"""
     pass
 
 
@@ -229,4 +224,52 @@ def project_table_delete():
             sql_session.commit()
             data["code"] = 0
 
+    return json.dumps(data)
+
+
+@views.route("/project/table/update")
+def project_table_update():
+    """项目子表信息的修改"""
+    pass
+
+
+@views.route("/project/table/details")
+def project_table_details():
+    """项目子表信息查找"""
+    data = {
+        "code": 1,
+        "data": []
+    }
+    # 创建数据库链接会话
+    sql_session = Session()
+
+    # 项目子表对应model
+    table_model = {
+        "工程概况": EngineeringSurvey,
+        "工程特征": EngineeringFeatures,
+        "工程造价指标汇总": EngineeringZJHZ,
+        "分部分项工程造价指标": EngineeringFBFX,
+        "措施项目造价指标": EngineeringCSXM,
+        "其他项目造价指标": EngineeringQTXM,
+        "工程造价费用分析": EngineeringFYFX,
+        "主要消耗量指标": EngineeringXHL
+    }
+    project_name = request.args.get("project_name")
+    table_name = request.args.get("table_name")
+    if project_name and table_name:
+        # 查询项目和项目对应子表是否存在
+        project_obj = sql_session.query(Project).filter_by(project_name=project_name).first()
+        pro2eng = sql_session.query(Project2Engineering).filter(
+            and_(Project2Engineering.project_name == project_name,
+                 Project2Engineering.engineering_name == table_name
+                 )).first()
+        if project_obj and pro2eng:
+            # 查询项目子表记录
+            table_obj = sql_session.query(table_model[table_name]).filter_by(project_id=project_obj.id).all()
+            for obj in table_obj:
+                data["data"].append({
+                    "engineering_name": obj.engineering_name,
+                    "content": obj.content,
+                })
+                data["code"] = 0
     return json.dumps(data)
