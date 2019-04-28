@@ -28,10 +28,12 @@ class Project(Base):
 
     id = Column(Integer, primary_key=True)  # 项目ID
     project_name = Column(String(255), unique=True, nullable=False)  # 项目名称
-    build_type = Column(String(100))  # 建筑类型
-    build_date = Column(String(32))  # 建筑时间
+    buildingType = Column(String(100))  # 建筑类型
+    buildingType2 = Column(String(255))  # 详细类型
+    buildTime = Column(String(32))  # 建筑时间
+    buildingScale = Column(String(32))  # 建筑面积
     provider = Column(String(32))  # 提供者
-    provider_date = Column(String(32))  # 提供时间
+    provideTime = Column(String(32))  # 提供时间
     remarks = Column(Text)  # 备注
     engineeringSurvey = relationship("EngineeringSurvey", cascade="all, delete-orphan", passive_deletes=True)
     engineeringFeatures = relationship("EngineeringFeatures", cascade="all, delete-orphan", passive_deletes=True)
