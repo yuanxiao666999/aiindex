@@ -36,14 +36,17 @@ def project_upload():
     sql_session = Session()
 
     # 判断项目是否存在
-    project_obj = sql_session.query(Project).filter_by(project_name=project_name).all()
+    project_obj = sql_session.query(Project).filter_by(project_name=project_name).first()
 
+    # 不存在则创建项目，存在则更新项目
     if not project_obj:
         # 创建项目对象
         project_obj = Project(**request.form)
 
         # 添加项目
         sql_session.add(project_obj)
+    else:
+        sql_session.query(Project).filter_by(project_name=project_name).update(request.form)
 
     # 对docx文件进行操作
     if file_type == "docx":
