@@ -4,6 +4,7 @@ __author__ = "HuangZhiTao"
 
 # import os
 from docx import Document
+from website import model
 
 
 def read_docx(file_path):
@@ -289,3 +290,35 @@ def read_docx(file_path):
                 continue
 
     return data
+
+
+def docx_class_table(eng_name):
+    if eng_name == "工程概况":
+        table_class = model.EngineeringSurvey
+        field = "engineeringSurvey"
+    elif eng_name == "工程特征":
+        table_class = model.EngineeringFeatures
+        field = "engineeringFeatures"
+    elif eng_name == "工程造价指标汇总":
+        table_class = model.EngineeringZJHZ
+        field = "engineeringZJHZ"
+    elif eng_name == "分部分项工程造价指标":
+        table_class = model.EngineeringFBFX
+        field = "engineeringFBFX"
+    elif eng_name == "措施项目造价指标":
+        table_class = model.EngineeringCSXM
+        field = "engineeringCSXM"
+    elif eng_name == "其他项目造价指标":
+        table_class = model.EngineeringQTXM
+        field = "engineeringQTXM"
+    elif eng_name == "工程造价费用分析":
+        table_class = model.EngineeringFYFX
+        field = "engineeringFYFX"
+    elif eng_name == "主要消耗量指标":
+        table_class = model.EngineeringXHL
+        field = "engineeringXHL"
+    else:
+        table_class = None
+        field = None
+
+    return table_class, field

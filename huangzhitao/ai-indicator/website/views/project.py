@@ -6,8 +6,8 @@ __author__ = "HuangZhiTao"
 import json
 from flask import request
 from . import views
-from website.model import *
-from utils.read_docx import read_docx
+from website.model import Session, Project, Project2Engineering
+from utils.read_docx import read_docx, docx_class_table
 
 
 @views.route("/project/upload", methods=["POST"])
@@ -60,33 +60,8 @@ def project_upload():
                 # 添加子项目对象
                 obj = Project2Engineering(project_name=project_name, engineering_name=k)
                 sql_session.add(obj)
-                table_class = None
-                field = None
-                if k == "工程概况":
-                    table_class = EngineeringSurvey
-                    field = "engineeringSurvey"
-                if k == "工程特征":
-                    table_class = EngineeringFeatures
-                    field = "engineeringFeatures"
-                if k == "工程造价指标汇总":
-                    table_class = EngineeringZJHZ
-                    field = "engineeringZJHZ"
-                if k == "分部分项工程造价指标":
-                    table_class = EngineeringFBFX
-                    field = "engineeringFBFX"
-                if k == "措施项目造价指标":
-                    table_class = EngineeringCSXM
-                    field = "engineeringCSXM"
-                if k == "其他项目造价指标":
-                    table_class = EngineeringQTXM
-                    field = "engineeringQTXM"
-                if k == "工程造价费用分析":
-                    table_class = EngineeringFYFX
-                    field = "engineeringFYFX"
-                if k == "主要消耗量指标":
-                    table_class = EngineeringXHL
-                    field = "engineeringXHL"
-
+                table_class, field = docx_class_table(k)
+                # 添加子项目表数据对象
                 if table_class:
                     for j in v:
                         if isinstance(j, dict):
@@ -106,7 +81,7 @@ def project_upload():
 
 @views.route("/project/tables")
 def project_tables():
-
+    """获取项目下的子项目名称"""
     data = {
         "code": 0,
         "data": []
@@ -133,3 +108,13 @@ def project_tables():
     return json.dumps(data)
 
 
+@views.route("/project/update", methods=["POST"])
+def project_update():
+    """项目信息的修改"""
+    pass
+
+
+@views.route("/project/subtable/update", methods=["POST"])
+def project_subtable_update():
+    """项目子表信息的修改"""
+    pass
