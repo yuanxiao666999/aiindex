@@ -28,11 +28,19 @@ class Project(Base):
 
     pid = Column(Integer, primary_key=True)  # 项目ID
     project_name = Column(String(255), unique=True, nullable=False)  # 项目名称
-    build_type = Column(String(100), nullable=False)  # 建筑类型
-    build_date = Column(String(32), nullable=False)  # 建筑时间
-    provider = Column(String(32), nullable=False)  # 提供者
-    provider_date = Column(String(32), nullable=False)  # 提供时间
-    remarks = Column(Text, nullable=False)  # 备注
+    build_type = Column(String(100))  # 建筑类型
+    build_date = Column(String(32))  # 建筑时间
+    provider = Column(String(32))  # 提供者
+    provider_date = Column(String(32))  # 提供时间
+    remarks = Column(Text)  # 备注
+    engineeringSurvey = relationship("EngineeringSurvey", cascade="all, delete-orphan", passive_deletes=True)
+    engineeringFeatures = relationship("EngineeringFeatures", cascade="all, delete-orphan", passive_deletes=True)
+    engineeringZJHZ = relationship("EngineeringZJHZ", cascade="all, delete-orphan", passive_deletes=True)
+    engineeringFBFX = relationship("EngineeringFBFX", cascade="all, delete-orphan", passive_deletes=True)
+    engineeringCSXM = relationship("EngineeringCSXM", cascade="all, delete-orphan", passive_deletes=True)
+    engineeringQTXM = relationship("EngineeringQTXM", cascade="all, delete-orphan", passive_deletes=True)
+    engineeringFYFX = relationship("EngineeringFYFX", cascade="all, delete-orphan", passive_deletes=True)
+    engineeringXHL = relationship("EngineeringXHL", cascade="all, delete-orphan", passive_deletes=True)
 
 
 class Project2Engineering(Base):
@@ -53,9 +61,10 @@ class EngineeringSurvey(Base):
     __tablename__ = 'project_engineering_survey'
 
     id = Column(Integer, primary_key=True)
-    project_name = Column(String(255), nullable=False)  # 父类项目
-    engineering_name = Column(String(255), index=True, nullable=False)  # 工程名称
-    content = Column(String(500), index=True, nullable=False)  # 内容
+    # project_name = Column(String(255))  # 父类项目
+    engineering_name = Column(String(255), index=True)  # 工程名称
+    content = Column(String(500), index=True)  # 内容
+    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
 
 
 class EngineeringFeatures(Base):
@@ -63,9 +72,10 @@ class EngineeringFeatures(Base):
     __tablename__ = 'project_engineering_features'
 
     id = Column(Integer, primary_key=True)
-    project_name = Column(String(255), nullable=False)  # 父类项目
-    engineering_name = Column(String(255), nullable=False)  # 工程名称
-    desc = Column(String(500), index=True, nullable=False)  # 特征描述
+    # project_name = Column(String(255))  # 父类项目
+    engineering_name = Column(String(255))  # 工程名称
+    desc = Column(String(500), index=True)  # 特征描述
+    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
 
 
 class EngineeringZJHZ(Base):
@@ -73,12 +83,13 @@ class EngineeringZJHZ(Base):
     __tablename__ = 'project_engineering_zjhz'
 
     id = Column(Integer, primary_key=True)
-    project_name = Column(String(255), nullable=False)  # 父类项目
-    s_number = Column(Integer, nullable=False)  # 序号
-    engineering_name = Column(String(255), nullable=False)  # 工程名称
-    cost = Column(String(100), nullable=False)  # 造价（万元）
-    square_cost = Column(String(100), nullable=False)  # 平方米造价（元/m2）
+    # project_name = Column(String(255))  # 父类项目
+    s_number = Column(Integer)  # 序号
+    engineering_name = Column(String(255))  # 工程名称
+    cost = Column(String(100))  # 造价（万元）
+    square_cost = Column(String(100))  # 平方米造价（元/m2）
     sum_prop = Column(String(100), nullable=False)  # 占总造价比例（%）
+    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
 
 
 class EngineeringFBFX(Base):
@@ -86,12 +97,13 @@ class EngineeringFBFX(Base):
     __tablename__ = 'project_engineering_fbfx'
 
     id = Column(Integer, primary_key=True)
-    project_name = Column(String(255), nullable=False)  # 父类项目
-    s_number = Column(Integer, nullable=False)  # 序号
-    engineering_name = Column(String(255), nullable=False)  # 工程名称
-    cost = Column(String(100), nullable=False)  # 造价（万元）
-    square_cost = Column(String(100), nullable=False)  # 平方米造价（元/m2）
-    sum_prop = Column(String(100), nullable=False)  # 占总造价比例（%）
+    # project_name = Column(String(255))  # 父类项目
+    s_number = Column(Integer)  # 序号
+    engineering_name = Column(String(255))  # 工程名称
+    cost = Column(String(100))  # 造价（万元）
+    square_cost = Column(String(100))  # 平方米造价（元/m2）
+    sum_prop = Column(String(100))  # 占总造价比例（%）
+    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
 
 
 class EngineeringCSXM(Base):
@@ -99,15 +111,59 @@ class EngineeringCSXM(Base):
     __tablename__ = 'project_engineering_csxm'
 
     id = Column(Integer, primary_key=True)
-    project_name = Column(String(255), nullable=False)  # 父类项目
-    s_number = Column(Integer, nullable=False)  # 序号
-    engineering_name = Column(String(255), nullable=False)  # 工程名称
-    cost = Column(String(100), nullable=False)  # 造价（万元）
-    square_cost = Column(String(100), nullable=False)  # 平方米造价（元/m2）
-    sum_prop = Column(String(100), nullable=False)  # 占总造价比例（%）
+    # project_name = Column(String(255))  # 父类项目
+    s_number = Column(Integer)  # 序号
+    engineering_name = Column(String(255))  # 工程名称
+    cost = Column(String(100))  # 造价（万元）
+    square_cost = Column(String(100))  # 平方米造价（元/m2）
+    sum_prop = Column(String(100))  # 占总造价比例（%）
+    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
 
 
+class EngineeringQTXM(Base):
+    """其他项目造价指标"""
+    __tablename__ = 'project_engineering_qtxm'
 
+    id = Column(Integer, primary_key=True)
+    # project_name = Column(String(255))  # 父类项目
+    s_number = Column(Integer)  # 序号
+    engineering_name = Column(String(255))  # 工程名称
+    cost = Column(String(100))  # 造价（万元）
+    square_cost = Column(String(100))  # 平方米造价（元/m2）
+    sum_prop = Column(String(100))  # 占总造价比例（%）
+    remarks = Column(String(100))  # 备注
+    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
+
+
+class EngineeringFYFX(Base):
+    """工程造价费用分析"""
+    __tablename__ = 'project_engineering_fyfx'
+
+    id = Column(Integer, primary_key=True)
+    # project_name = Column(String(255))  # 父类项目
+    s_number = Column(Integer)  # 序号
+    engineering_name = Column(String(255))  # 工程名称
+    cost = Column(String(100))  # 造价（万元）
+    square_cost = Column(String(100))  # 平方米造价（元/m2）
+    artificial_prop = Column(String(100))  # 占总造价比例（%） 人工费
+    materials_prop = Column(String(100))  # 占总造价比例（%） 材料费
+    mechanics_prop = Column(String(100))  # 占总造价比例（%） 机械费
+    manage_prop = Column(String(100))  # 占总造价比例（%） 管理费和利润
+    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
+
+
+class EngineeringXHL(Base):
+    """主要消耗量指标"""
+    __tablename__ = 'project_engineering_xhl'
+
+    id = Column(Integer, primary_key=True)
+    # project_name = Column(String(255))  # 父类项目
+    s_number = Column(Integer)  # 序号
+    engineering_name = Column(String(255))  # 工程名称
+    unit = Column(String(100))  # 单位
+    consumption = Column(String(100))  # 消耗量
+    square_consumption = Column(String(100))  # 百平方米消耗量
+    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
 
 
 engine = create_engine(
@@ -117,6 +173,5 @@ engine = create_engine(
     pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错
     pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
 )
-
 
 Session = sessionmaker(bind=engine)

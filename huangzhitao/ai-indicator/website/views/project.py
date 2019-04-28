@@ -35,7 +35,7 @@ def project_upload():
     sql_session = Session()
 
     # 判断项目是否存在
-    obj_ = sql_session.query(Project).filter_by(project_name=project_name)
+    obj_ = sql_session.query(Project).filter_by(project_name=project_name).all()
     if not obj_:
         # 创建项目对象
         project_obj = Project(**request.form)
@@ -82,7 +82,7 @@ def project_tables():
 
     if engineerings:
         for i in engineerings:
-            data["data"].append({"project_name": i[0]})
+            data["data"].append({"engineering_name": i[0]})
     else:
         data["code"] = 1
         data["msg"] = "项目不存在"
