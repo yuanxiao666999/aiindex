@@ -58,7 +58,7 @@
             , page: true
             , id: 'tableReload'
             , cols: [[
-                {field: 'projectName', title: '项目名称', sort: true}
+                {field: 'project_name', title: '项目名称', sort: true}
                 , {field: 'buildTime', title: '建筑时间', sort: true}
                 , {field: 'buildingType', title: '建筑类型', sort: true}
                 , {field: 'buildingType2', title: '具体类型', sort: true}
@@ -76,7 +76,8 @@
             var project_name = obj.tr.find('td').eq(0).text();
             if (layEvent === 'del') {
                 layer.confirm('确定删除？', function (index) {
-                    $.post(url = '/project/delete', {'project_name': project_name}, function (res) {
+                    $.get(url = '/project/delete', {'project_name': project_name}, function (res) {
+                        console.log(res);
                         if (res.code === 0) {
                             obj.del();
                         } else {

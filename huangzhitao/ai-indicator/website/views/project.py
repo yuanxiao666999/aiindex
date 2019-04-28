@@ -137,13 +137,14 @@ def project_details():
                 "remarks": project.remarks,
             })
         else:
-            data["code"] = 1
             data["count"] = count[0]
     else:
+        data['code'] = 1
         data["msg"] = "已录入项目为空"
 
     sql_session.close()
 
+    print(data)
     return json.dumps(data)
 
 
