@@ -6,7 +6,7 @@ __author__ = "HuangZhiTao"
 import json
 from flask import request
 from . import views
-from website.model import Session, Project, Project2Engineering
+from website.model import *
 from utils.read_docx import read_docx
 
 
@@ -35,8 +35,9 @@ def project_upload():
     sql_session = Session()
 
     # 判断项目是否存在
-    obj_ = sql_session.query(Project).filter_by(project_name=project_name).all()
-    if not obj_:
+    project_obj = sql_session.query(Project).filter_by(project_name=project_name).all()
+
+    if not project_obj:
         # 创建项目对象
         project_obj = Project(**request.form)
 
@@ -45,11 +46,46 @@ def project_upload():
 
     # 对docx文件进行操作
     if file_type == "docx":
+        # 解析docx文件，返回数据
         table_data = read_docx(file)
         if table_data:
-            for k in table_data.keys():
+            # 项目对象
+            project_ = sql_session.query(Project).filter_by(project_name=project_name).first()
+            for k, v in table_data.items():
+                # 项目对应的子项目对象
                 obj = Project2Engineering(project_name=project_name, engineering_name=k)
                 sql_session.add(obj)
+                table_class = None
+                field = None
+                if k == "工程概况":
+                    table_class = EngineeringSurvey
+                    field = "engineeringSurvey"
+                if k == "工程特征":
+                    table_class = EngineeringFeatures
+                    field = "engineeringFeatures"
+                if k == "工程造价指标汇总":
+                    table_class = EngineeringZJHZ
+                    field = "engineeringZJHZ"
+                if k == "分部分项工程造价指标":
+                    table_class = EngineeringFBFX
+                    field = "engineeringFBFX"
+                if k == "措施项目造价指标":
+                    table_class = EngineeringCSXM
+                    field = "engineeringCSXM"
+                if k == "其他项目造价指标":
+                    table_class = EngineeringQTXM
+                    field = "engineeringQTXM"
+                if k == "工程造价费用分析":
+                    table_class = EngineeringFYFX
+                    field = "engineeringFYFX"
+                if k == "主要消耗量指标":
+                    table_class = EngineeringXHL
+                    field = "engineeringXHL"
+
+                if table_class:
+                    for j in v:
+                        getattr(project_, field).append(table_class(**j))
+                    sql_session.add(project_)
             else:
                 try:
                     sql_session.commit()

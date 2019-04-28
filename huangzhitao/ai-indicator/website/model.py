@@ -17,16 +17,16 @@ class Account(Base):
     __tablename__ = 'account'
 
     id = Column(Integer, primary_key=True)
-    user = Column(String(32), index=True, nullable=False, comment="用户名")
-    passwd = Column(String(32), nullable=False, comment="用户密码")
-    permission = Column(Integer, nullable=False, comment="用户权限")
+    user = Column(String(32), index=True, nullable=False)
+    passwd = Column(String(32), nullable=False)
+    permission = Column(Integer, nullable=False)
 
 
 class Project(Base):
     """项目信息表"""
     __tablename__ = 'projects'
 
-    pid = Column(Integer, primary_key=True)  # 项目ID
+    id = Column(Integer, primary_key=True)  # 项目ID
     project_name = Column(String(255), unique=True, nullable=False)  # 项目名称
     build_type = Column(String(100))  # 建筑类型
     build_date = Column(String(32))  # 建筑时间
@@ -63,8 +63,8 @@ class EngineeringSurvey(Base):
     id = Column(Integer, primary_key=True)
     # project_name = Column(String(255))  # 父类项目
     engineering_name = Column(String(255), index=True)  # 工程名称
-    content = Column(String(500), index=True)  # 内容
-    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
+    content = Column(String(500))  # 内容
+    project_id = Column(Integer, ForeignKey('projects.id', ondelete='CASCADE'))
 
 
 class EngineeringFeatures(Base):
@@ -74,8 +74,8 @@ class EngineeringFeatures(Base):
     id = Column(Integer, primary_key=True)
     # project_name = Column(String(255))  # 父类项目
     engineering_name = Column(String(255))  # 工程名称
-    desc = Column(String(500), index=True)  # 特征描述
-    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
+    desc = Column(String(500))  # 特征描述
+    project_id = Column(Integer, ForeignKey('projects.id', ondelete='CASCADE'))
 
 
 class EngineeringZJHZ(Base):
@@ -84,12 +84,12 @@ class EngineeringZJHZ(Base):
 
     id = Column(Integer, primary_key=True)
     # project_name = Column(String(255))  # 父类项目
-    s_number = Column(Integer)  # 序号
+    s_number = Column(String(255))  # 序号
     engineering_name = Column(String(255))  # 工程名称
     cost = Column(String(100))  # 造价（万元）
     square_cost = Column(String(100))  # 平方米造价（元/m2）
-    sum_prop = Column(String(100), nullable=False)  # 占总造价比例（%）
-    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
+    sum_prop = Column(String(100))  # 占总造价比例（%）
+    project_id = Column(Integer, ForeignKey('projects.id', ondelete='CASCADE'))
 
 
 class EngineeringFBFX(Base):
@@ -98,12 +98,12 @@ class EngineeringFBFX(Base):
 
     id = Column(Integer, primary_key=True)
     # project_name = Column(String(255))  # 父类项目
-    s_number = Column(Integer)  # 序号
+    s_number = Column(String(255))  # 序号
     engineering_name = Column(String(255))  # 工程名称
     cost = Column(String(100))  # 造价（万元）
     square_cost = Column(String(100))  # 平方米造价（元/m2）
     sum_prop = Column(String(100))  # 占总造价比例（%）
-    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
+    project_id = Column(Integer, ForeignKey('projects.id', ondelete='CASCADE'))
 
 
 class EngineeringCSXM(Base):
@@ -112,12 +112,12 @@ class EngineeringCSXM(Base):
 
     id = Column(Integer, primary_key=True)
     # project_name = Column(String(255))  # 父类项目
-    s_number = Column(Integer)  # 序号
+    s_number = Column(String(255))  # 序号
     engineering_name = Column(String(255))  # 工程名称
     cost = Column(String(100))  # 造价（万元）
     square_cost = Column(String(100))  # 平方米造价（元/m2）
     sum_prop = Column(String(100))  # 占总造价比例（%）
-    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
+    project_id = Column(Integer, ForeignKey('projects.id', ondelete='CASCADE'))
 
 
 class EngineeringQTXM(Base):
@@ -126,13 +126,13 @@ class EngineeringQTXM(Base):
 
     id = Column(Integer, primary_key=True)
     # project_name = Column(String(255))  # 父类项目
-    s_number = Column(Integer)  # 序号
+    s_number = Column(String(255))  # 序号
     engineering_name = Column(String(255))  # 工程名称
     cost = Column(String(100))  # 造价（万元）
     square_cost = Column(String(100))  # 平方米造价（元/m2）
     sum_prop = Column(String(100))  # 占总造价比例（%）
     remarks = Column(String(100))  # 备注
-    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
+    project_id = Column(Integer, ForeignKey('projects.id', ondelete='CASCADE'))
 
 
 class EngineeringFYFX(Base):
@@ -141,7 +141,7 @@ class EngineeringFYFX(Base):
 
     id = Column(Integer, primary_key=True)
     # project_name = Column(String(255))  # 父类项目
-    s_number = Column(Integer)  # 序号
+    s_number = Column(String(255))  # 序号
     engineering_name = Column(String(255))  # 工程名称
     cost = Column(String(100))  # 造价（万元）
     square_cost = Column(String(100))  # 平方米造价（元/m2）
@@ -149,7 +149,7 @@ class EngineeringFYFX(Base):
     materials_prop = Column(String(100))  # 占总造价比例（%） 材料费
     mechanics_prop = Column(String(100))  # 占总造价比例（%） 机械费
     manage_prop = Column(String(100))  # 占总造价比例（%） 管理费和利润
-    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
+    project_id = Column(Integer, ForeignKey('projects.id', ondelete='CASCADE'))
 
 
 class EngineeringXHL(Base):
@@ -158,20 +158,24 @@ class EngineeringXHL(Base):
 
     id = Column(Integer, primary_key=True)
     # project_name = Column(String(255))  # 父类项目
-    s_number = Column(Integer)  # 序号
+    s_number = Column(String(255))  # 序号
     engineering_name = Column(String(255))  # 工程名称
     unit = Column(String(100))  # 单位
     consumption = Column(String(100))  # 消耗量
     square_consumption = Column(String(100))  # 百平方米消耗量
-    project_id = Column(Integer, ForeignKey('projects.pid', ondelete='CASCADE'))
+    project_id = Column(Integer, ForeignKey('projects.id', ondelete='CASCADE'))
 
 
 engine = create_engine(
-    "mysql+pymysql://root:root@192.168.1.10:3306/aiindex?charset=utf8",
+    # "mysql+pymysql://root:111@127.0.0.1:3306/aiindex?charset=utf8",
+    "mysql+pymysql://root:111@127.0.0.1:3306/aiindex?charset=utf8",
     max_overflow=0,  # 超过连接池大小外最多创建的连接
     pool_size=5,  # 连接池大小
     pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错
     pool_recycle=-1  # 多久之后对线程池中的线程进行一次连接的回收（重置）
 )
 
+
 Session = sessionmaker(bind=engine)
+
+
