@@ -52,7 +52,12 @@ def project_upload():
             # 项目对象
             project_ = sql_session.query(Project).filter_by(project_name=project_name).first()
             for k, v in table_data.items():
-                # 项目对应的子项目对象
+                # 判断项目对应的子项目对象是否存在
+                obj = sql_session.query(Project2Engineering).filter_by(project_name=project_name, engineering_name=k).first()
+                if obj:
+                    data["msg"] = f"文件中存在已录入表:【{k}】"
+                    return json.dumps(data)
+                # 添加子项目对象
                 obj = Project2Engineering(project_name=project_name, engineering_name=k)
                 sql_session.add(obj)
                 table_class = None
@@ -84,7 +89,8 @@ def project_upload():
 
                 if table_class:
                     for j in v:
-                        getattr(project_, field).append(table_class(**j))
+                        if isinstance(j, dict):
+                            getattr(project_, field).append(table_class(**j))
                     sql_session.add(project_)
             else:
                 try:
@@ -124,3 +130,5 @@ def project_tables():
     sql_session.close()
 
     return json.dumps(data)
+
+
