@@ -5,9 +5,9 @@ __author__ = "HuangZhiTao"
 
 import json
 from flask import request
-from sqlalchemy import func
+from sqlalchemy import func, and_
 from . import views
-from website.model import Session, Project, Project2Engineering
+from website.model import *
 from utils.read_docx import read_docx, docx_class_table
 
 
@@ -140,9 +140,9 @@ def project_details():
                 "remarks": project.remarks,
             })
         else:
-            data["code"] = 1
             data["count"] = count[0]
     else:
+        data["code"] = 1
         data["msg"] = "已录入项目为空"
 
     sql_session.close()
@@ -150,13 +150,84 @@ def project_details():
     return json.dumps(data)
 
 
-@views.route("/project/update", methods=["POST"])
+@views.route("/project/delete")
+def project_delete():
+    """项目信息的删除"""
+
+    data = {
+        "code": 1,
+    }
+
+    # 创建数据库链接会话
+    sql_session = Session()
+
+    project_name = request.args.get("project_name")
+    if project_name:
+        project = sql_session.query(Project).filter_by(project_name=project_name).first()
+        if project:
+            # 删除项目信息
+            sql_session.query(Project).filter_by(project_name=project_name).delete()
+            # 删除项目对应子表信息
+            sql_session.query(Project2Engineering).filter_by(project_name=project_name).delete()
+            sql_session.commit()
+            data["code"] = 0
+        else:
+            data["msg"] = "项目不存在"
+    sql_session.close()
+
+    return json.dumps(data)
+
+
+@views.route("/project/update")
 def project_update():
     """项目信息的修改"""
     pass
 
 
-@views.route("/project/subtable/update", methods=["POST"])
-def project_subtable_update():
+@views.route("/project/table/update")
+def project_table_update():
     """项目子表信息的修改"""
     pass
+
+
+@views.route("/project/table/delete")
+def project_table_delete():
+    """项目子表的删除"""
+    data = {
+        "code": 0
+    }
+    # 创建数据库链接会话
+    sql_session = Session()
+
+    # 项目子表对应model
+    table_model = {
+        "工程概况": EngineeringSurvey,
+        "工程特征": EngineeringFeatures,
+        "工程造价指标汇总": EngineeringZJHZ,
+        "分部分项工程造价指标": EngineeringFBFX,
+        "措施项目造价指标": EngineeringCSXM,
+        "其他项目造价指标": EngineeringQTXM,
+        "工程造价费用分析": EngineeringFYFX,
+        "主要消耗量指标": EngineeringXHL
+    }
+    project_name = request.args.get("project_name")
+    table_name = request.args.get("table_name")
+    if project_name and table_name:
+        # 查询项目和项目对应子表是否存在
+        project_obj = sql_session.query(Project).filter_by(project_name=project_name).first()
+        pro2eng = sql_session.query(Project2Engineering).filter(
+            and_(Project2Engineering.project_name == project_name,
+                 Project2Engineering.engineering_name == table_name
+                 )).first()
+        if project_obj and pro2eng:
+            # 删除项目子表记录
+            sql_session.query(table_model[table_name]).filter_by(project_id=project_obj.id).delete()
+            # 删除项目对应子表记录
+            sql_session.query(Project2Engineering).filter(
+                and_(Project2Engineering.project_name == project_name,
+                     Project2Engineering.engineering_name == table_name
+                     )).delete()
+            sql_session.commit()
+            data["code"] = 1
+
+    return json.dumps(data)
