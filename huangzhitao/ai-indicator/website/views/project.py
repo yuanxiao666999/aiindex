@@ -84,7 +84,8 @@ def project_upload():
 
                 if table_class:
                     for j in v:
-                        getattr(project_, field).append(table_class(**j))
+                        if isinstance(j, dict):
+                            getattr(project_, field).append(table_class(**j))
                     sql_session.add(project_)
             else:
                 try:
