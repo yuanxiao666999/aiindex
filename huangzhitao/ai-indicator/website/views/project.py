@@ -39,6 +39,7 @@ def project_upload():
 
     if not project_obj:
         # 创建项目对象
+        print(request.form)
         project_obj = Project(**request.form)
 
         # 添加项目

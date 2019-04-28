@@ -54,7 +54,7 @@
 
         table.render({
             elem: '#project-table'
-            , url: '../json/project_history.json'
+            , url: '/project/details'
             , page: true
             , id: 'tableReload'
             , cols: [[
@@ -73,10 +73,10 @@
             var data =obj.data;
             data = JSON.stringify(data);
             var layEvent = obj.event;
-            var name = obj.tr.find('td').eq(0).text();
+            var project_name = obj.tr.find('td').eq(0).text();
             if (layEvent === 'del') {
                 layer.confirm('确定删除？', function (index) {
-                    $.post(url = '/project/history/delete', {'name': name}, function (res) {
+                    $.post(url = '/project/delete', {'project_name': project_name}, function (res) {
                         if (res.code === 0) {
                             obj.del();
                         } else {
