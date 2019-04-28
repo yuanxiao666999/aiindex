@@ -5,6 +5,7 @@ __author__ = "HuangZhiTao"
 
 import json
 from flask import request
+from sqlalchemy import func
 from . import views
 from website.model import Session, Project, Project2Engineering
 from utils.read_docx import read_docx, docx_class_table
@@ -103,6 +104,44 @@ def project_tables():
     else:
         data["code"] = 1
         data["msg"] = "项目不存在"
+    sql_session.close()
+
+    return json.dumps(data)
+
+
+@views.route("/project/details")
+def project_details():
+    """返回所有的项目信息"""
+
+    data = {
+        "code": 0,
+        "data": []
+    }
+
+    # 创建数据库链接会话
+    sql_session = Session()
+
+    # 获取数据量
+    count = sql_session.query(func.count(Project.id)).first()
+    if count:
+        projects = sql_session.query(Project).all()
+        for project in projects:
+            data["data"].append({
+                "project_name": project.project_name,
+                "buildingType": project.buildingType,
+                "buildingType2": project.buildingType2,
+                "buildTime": project.buildTime,
+                "buildingScale": project.buildingScale,
+                "provider": project.provider,
+                "provideTime": project.provideTime,
+                "remarks": project.remarks,
+            })
+        else:
+            data["code"] = 1
+            data["count"] = count[0]
+    else:
+        data["msg"] = "已录入项目为空"
+
     sql_session.close()
 
     return json.dumps(data)
