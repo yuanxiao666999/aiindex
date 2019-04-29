@@ -229,7 +229,7 @@
                 window.sessionStorage.setItem('project_name', project_name);
                 var table_name = obj.tr.find('td').eq(0).text().trim();
                 if(obj.event === 'edit'){
-                    window.location.href = './table/'+table_name+'.html'  
+                    window.open('./table/'+table_name+'.html', '_blank');  
                 }else if(obj.event === 'del'){
                     layer.confirm('确定删除？', function (index) {
                         $.get(url = '/project/table/delete', {'project_name': project_name, 'table_name':table_name}, function (res) {
