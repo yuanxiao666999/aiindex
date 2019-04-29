@@ -17,10 +17,13 @@
             <div class="layui-col-md12">
                 <div class="layui-card">
                     <div class="layui-card-header">
-                        工程概况
+                        措施项目造价指标
                     </div>
                     <div class="layui-card-body">
                         <table id="project-table" lay-filter="project-table"></table>
+                        <div>
+                            <p>注:其他措施费是指夜间施工、二次搬运、冬雨季施工、临时保护措施等。</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -43,14 +46,15 @@
 
         table.render({
             elem: '#project-table'
-            , url: '/project/table/details?table_name=工程概况&project_name=' + project_name
+            , url: '/project/table/details?table_name=措施项目造价指标&project_name=' + project_name
             , cols: [[
-                {field: 'engineering_name', title: '项目名称'}
-                , {field: 'content', title: '内容'}
+                {field: 'number', title: '序号'}
+                , {field: 'engineering_name', title: '项目名称'}
+                , {field: 'cost', title: '造价(万元)'}
+                , {field: 'square_meter', title: '平方米造价（元/m2）'}
+                , {field: 'proportion', title: '占总造价比例（%）'}
             ]]
         });
-
-
     });
 
 </script>

@@ -17,7 +17,7 @@
             <div class="layui-col-md12">
                 <div class="layui-card">
                     <div class="layui-card-header">
-                        工程概况
+                        工程特征
                     </div>
                     <div class="layui-card-body">
                         <table id="project-table" lay-filter="project-table"></table>
@@ -43,14 +43,12 @@
 
         table.render({
             elem: '#project-table'
-            , url: '/project/table/details?table_name=工程概况&project_name=' + project_name
+            , url: '/project/table/details?table_name=工程特征&project_name=' + project_name
             , cols: [[
                 {field: 'engineering_name', title: '项目名称'}
-                , {field: 'content', title: '内容'}
+                , {field: 'features', title: '特征描述'}
             ]]
         });
-
-
     });
 
 </script>

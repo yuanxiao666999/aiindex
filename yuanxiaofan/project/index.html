@@ -56,7 +56,6 @@
         table.render({
             elem: '#project-table'
             , url: '/project/details'
-
             , page: true
             , id: 'tableReload'
             , cols: [[
@@ -74,6 +73,7 @@
         table.on('tool(project-table)', function (obj) {
             var data =obj.data;
             data = JSON.stringify(data);
+            console.log(data);
             var layEvent = obj.event;
             var project_name = obj.tr.find('td').eq(0).text();
             if (layEvent === 'del') {

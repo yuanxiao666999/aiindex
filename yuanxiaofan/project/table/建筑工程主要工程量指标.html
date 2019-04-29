@@ -17,7 +17,7 @@
             <div class="layui-col-md12">
                 <div class="layui-card">
                     <div class="layui-card-header">
-                        工程概况
+                        建筑工程主要工程量指标
                     </div>
                     <div class="layui-card-body">
                         <table id="project-table" lay-filter="project-table"></table>
@@ -43,14 +43,16 @@
 
         table.render({
             elem: '#project-table'
-            , url: '/project/table/details?table_name=工程概况&project_name=' + project_name
+            , url: '/project/table/details?table_name=建筑工程主要工程量指标&project_name=' + project_name
             , cols: [[
-                {field: 'engineering_name', title: '项目名称'}
-                , {field: 'content', title: '内容'}
+                {field: 'number', title: '序号'}
+                , {field: 'engineering_name', title: '项目名称'}
+                , {field: 'cost', title: '单位'}
+                , {field: 'engineering_amount', title: '工程量'}
+                , {field: 'proportion', title: '百平方米工程量'}
+                , {field: 'comprehensive', title: '综合单价（含税、元）'}
             ]]
         });
-
-
     });
 
 </script>
